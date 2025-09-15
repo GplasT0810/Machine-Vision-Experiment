@@ -1,0 +1,2096 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    \usepackage{ctex}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+    
+    \usepackage{geometry}
+    \usepackage{float}
+    \usepackage{multicol}
+    \usepackage{subfigure}
+    \usepackage{makecell}
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \makeatletter
+    \newsavebox\pandoc@box
+    \newcommand*\pandocbounded[1]{%
+      \sbox\pandoc@box{#1}%
+      % scaling factors for width and height
+      \Gscale@div\@tempa\textheight{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+      \Gscale@div\@tempb\linewidth{\wd\pandoc@box}%
+      % select the smaller of both
+      \ifdim\@tempb\p@<\@tempa\p@
+        \let\@tempa\@tempb
+      \fi
+      % scaling accordingly (\@tempa < 1)
+      \ifdim\@tempa\p@<\p@
+        \scalebox{\@tempa}{\usebox\pandoc@box}%
+      % scaling not needed, use as it is
+      \else
+        \usebox{\pandoc@box}%
+      \fi
+    }
+    \makeatother
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{机器视觉-实践作业-1}
+    \vspace{2em}\author{国嘉通\thanks{Tel.+86-166 8130 6085,\ E-mail:guojiatom2006@outlook.com}} 
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+   
+    
+
+\begin{document}
+    
+    \maketitle
+    \vspace*{4em}
+    \begin{abstract}
+    	机器视觉第一次实验课程主要包含两大部分的练习，一是实验环境的搭建，二是基础的图像操作。对于实验环境的基本搭建部分，从基于ANACONDA的Windows系统及基于Homebrew的Mac系统的基础环境的搭建两方面分别展开。对于基础图像操作部分，将分多个部分进行展开讲解。此外，本文中还夹杂着个人对于图像变换、运算等内在原理的思考及疑问。希望本篇文章是一篇内容翔实、方便随时翻阅复习学习OpenCV的学习笔记。另外，本文使用\LaTeX 书写完成，在附录部分有作者整理的精简\LaTeX 简单上手使用技巧，供读者及时翻阅。文章完成较为仓促，有许多细节作者无法在文中一一落实到位，敬请谅解。
+    \end{abstract}
+        
+    \begin{center}
+    	\vspace*{5em}{\large \textbf{Now the CODE is available at:}}\\\underline{https://github.com/GplasT0810/Machine-Vision-Experiment.git}\\
+    	\vspace*{6em}{\Large \textbf{长沙理工大学}}\\
+    	\vspace{0.7em}{\large \textbf{卓越工程师学院\ 绿色智慧交通 2401班}}\\
+    	\vspace{0.7em}\textbf{{\large 202404080608}}\\
+    	\vspace{0.7em}{\large \textbf{国嘉通}}
+    \end{center}
+    \newpage
+
+    \tableofcontents
+    \begin{center}
+    	\vspace{17em}\adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{SchPic.png}
+    \end{center}
+    
+    \vspace*{22em}--------------------------------------------\\
+    Complated Time: Sep.$15^{th}$.2025\\ \\
+    Guo Jiatong , Green \& Intelligent Transportation 2401\\
+    Elite Engineering School , Changsha University of Science \& Technology.\\
+    Changsha 410114 , Hunan , China
+    
+    \newpage
+    
+    \newpage
+    \vspace*{15em}{\Huge \textbf{||\ 第一章}}\\
+    \\ \\
+    {\Huge \textbf{Python环境配置}}
+    \newpage
+    
+    \section{Python环境配置}
+    \subsection{Windows系统情况下的相关配置}
+    使用\underline{Anaconda} 作为Python内核，搭配VSCode作为编辑器可完成相关设置。
+    具体步骤如下:
+    \begin{enumerate}
+    	\item 在Anaconda Prompt中搭建环境，指令为“conda create -n \fbox{环境名} python=\fbox{版本号}”。\\
+    	例如，欲想搭建一个名为\underline{myenv}的Python版本为\underline{3.11.11}的环境，我们可以输入以下指令:
+    	\begin{center}
+    		\fbox{
+    			\begin{minipage}{14.6cm}
+    				conda create -n myenv python=3.11.11
+    		\end{minipage}}
+    	\end{center}
+    	
+    	\item 搭建完虚拟环境后，要将其激活。\\
+    	激活指令为“conda activate \fbox{环境名}”。假设已经以“myenv”搭建好环境，我们可以输入以下指令以进入此虚拟环境。（若不进行此步骤，后续安装包的过程中则会直接安装在base基环境下）
+    	\begin{center}
+    		\fbox{
+    			\begin{minipage}{14.6cm}
+    				conda activate myenv
+    		\end{minipage}}
+    	\end{center}
+    	
+    	\item 完成环境激活后，则可以安装相应的软件包。\\
+    	一些较为常见的软件包如下表1所示：
+    	\begin{table}[H]
+    		\centering
+    		\caption{常见Python软件包汇总}
+    		\setlength{\tabcolsep}{15pt}
+    		\begin{tabular}{@{}c|c|c|c@{}}
+    			\toprule
+    			\textbf{Package} & \textbf{Package} & \textbf{Package} & \textbf{Package} \\
+    			\midrule
+    			absl-py & cachetools & certifi & charset-normalizer \\
+    			cloudpickle & colorama & contourpy & cycler \\
+    			et-xmlfile & filelock & fonttools & google-auth \\
+    			google-auth-oauthlib & grpcio & gym & gym-notices \\
+    			idna & Jinja2 & kiwisolver & Markdown \\
+    			MarkupSafe & \textbf{matplotlib} & mpmath & networkx \\
+    			\textbf{numpy} & oauthlib & \textbf{opencv-python} & openpyxl \\
+    			packaging & \textbf{pandas} & \textbf{pathlib} & \textbf{pillow} \\
+    			\textbf{pip} & protobuf & pyasn1 & pyasn1 \verb*|_| modules \\
+    			pyparsing & \textbf{jupyter notebook} & pytz & \textbf{PyYAML} \\
+    			requests & requests-oauthlib & rsa & \textbf{scipy} \\
+    			\textbf{seaborn} & setuptools & six & sympy \\
+    			\textbf{tensorboard} & tensorboardX & \textbf{tk} & \textbf{torch} \\
+    			torchaudio & torchvision & \textbf{tqdm} & tzdata \\
+    			urllib3 & \textbf{opencv-python} & wheel & xlrd \\
+    			\bottomrule
+    		\end{tabular}
+    		\label{table1}
+    	\end{table}
+    	可以使用“pip install \fbox{Package}”指令安装相关软件包，其中Package为表\ref{table1}中的软件包或其之外的软件包。假设欲安装\underline{numpy}软件包，我们可以输入如下指令：\\
+    	\fbox{
+    		\centering
+    		\begin{minipage}{14.6cm}
+    			pip install numpy
+    	\end{minipage}}
+    	
+    	\begin{tcolorbox}[colback=yellow!10,colframe=blue!50,title=\textbf{注意！}]
+    		上述指令可能安装最新版本的对应的软件包或者是最适配当前Python版本的软件包。如果想要安装指定版本的软件包，应当使用“pip install \fbox{Package}==\fbox{Version}”指令。以安装2.2.6版本的numpy包为例：\\
+    		\fbox{
+    			\centering
+    			\begin{minipage}{13.6cm}
+    				pip install numpy==2.2.6
+    		\end{minipage}}
+    	\end{tcolorbox}
+    	
+    	\item 其余的部分有用指令见下表\ref{table2}.
+    	\begin{table}[H]
+    		\centering
+    		\caption{部分其他conda指令}
+    		\setlength{\tabcolsep}{10pt}
+    		\begin{tabular}{@{}c|c@{}}
+    			\toprule
+    			\textbf{指令} & \textbf{代码} \\
+    			\midrule
+    			删除环境中的包 & pip uninstall \fbox{Package} \\
+    			删除环境 & conda remove -n \fbox{Env.name} \\
+    			退出虚拟环境（回到base） & detective \\
+    			查看虚拟环境中的包库 & pip list \\
+    			查看Env列表（可以用于改环境名） & conda env list \\
+    			\bottomrule
+    		\end{tabular}
+    		\label{table2}
+    	\end{table}
+    	
+    \end{enumerate}
+    
+    \subsection{Mac系统情况下的相关配置}
+    对于Mac系统，我们可以直接使用系统带有的终端进行配置，而不需要安装Anaconda。不过我们需要在终端中安装Homebrew，此插件源为Github，有时内网可能不灵，解决方案是多试几次或者科学上网（可以使用Infiniport）。
+    
+    \begin{enumerate}
+    	\item 首先可以使用指令来检测Mac是否自带Python。指令如下:
+    	\begin{center}
+    		\fbox{
+    			\begin{minipage}{14.6cm}
+    				python --version   \underline{(对于Mac自带Python版本为2.x)} \\
+    				python3 --version \underline{(对于大部分Mac Python版本为3.x)}
+    		\end{minipage}}
+    	\end{center}
+    	
+    	\item 若无预置Python，则需要通过Homebrew包管理器来安装最新的Python版本。如果还没有安装Homebrew，应先安装它。（源在Github，或许需要科学上网\textbf{> >} \underline{infiniport.xyz})\\
+    	在终端中输入：
+    	\begin{center}
+    		\fbox{
+    			\begin{minipage}{14.6cm}
+    				/bin/bash~-c~"~\$(curl~-fsSL~\\ https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    		\end{minipage}}
+    	\end{center}
+    	
+    	\item Homebrew安装完成后，使用其安装Python。指令为：
+    	\begin{center}
+    		\fbox{
+    			\begin{minipage}{14.6cm}
+    				brew install python
+    		\end{minipage}}
+    	\end{center}
+    	
+    	\item 为了避免不同项目之间的冲突，应搭建虚拟环境，并在虚拟环境中搭建对应的包。此步骤大体包含\underline{创建虚拟环境}、\underline{激活虚拟环境}、\underline{在虚拟环境中安装包}、\underline{退出虚拟环境}四部分。\\
+    	首先，创建虚拟环境。以搭建环境名为“myenv”的Python环境为例，其代码如下所示。
+    	\begin{center}
+    		\fbox{
+    			\begin{minipage}{14.6cm}
+    				python3 -m venv myenv
+    		\end{minipage}}
+    	\end{center}
+    	
+    	然后，激活虚拟环境，代码如下所示。
+    	\begin{center}
+    		\fbox{
+    			\begin{minipage}{14.6cm}
+    				source myenv/bin/activate
+    		\end{minipage}}
+    	\end{center}
+    	
+    	在所创建的虚拟环境中安装对应的软件包，以安装numpy包为例，代码如下所示。
+    	\begin{center}
+    		\fbox{
+    			\begin{minipage}{14.6cm}
+    				pip install numpy
+    		\end{minipage}}
+    	\end{center}
+    	
+    	最后，所有上述步骤完成后，可以使用\underline{deactivate}指令退出虚拟环境，并在IDE中进行配置，不再过多赘述。
+    	\subsection{配置完成后的pip list截图(部分)}
+    	最终，在Windows系统下的Anaconda中配置的Python环境所安装的软件包(部分)以及Mac系统下的终端-Homebrew中配置的Python环境所安装的软件包(部分)如下图所示。\\
+    	可以在激活对应环境后键入“pip list”以显示它。
+    \begin{center}
+		\adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{ENV.png}
+	\end{center}
+	
+    \end{enumerate}
+    
+    \newpage
+    \vspace*{15em}{\Huge \textbf{||\ 第二章}}\\
+    \\ \\
+    {\Huge \textbf{OpenCV基础图像操作}}
+    \newpage
+    
+    \section{OpenCV基础图像操作}
+    OpenCV的基础操作包含\textbf{\textit{读取$\to$显示$\to$属性输出$\to$转换$\to$变换$\to$运算$\to$解码}}等基本操作。本大节利用Jupyter Notebook分别书写练习了相关语法。下面将一一展开进行叙述。
+    
+    \subsection{读取与显示图像}
+    本小节主要展示如何使用opencv-python库以及matplotlib库中的pyplot来导入图像并显示图像。
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+%\prompt{In}{incolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}导入图像并显示图像}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{cv2}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{c+c1}{\PYZsh{}读取图片}
+\PY{n}{img\PYZus{}path1} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/bxc.jpg}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img\PYZus{}path2} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/background.jpg}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img\PYZus{}bxc} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}path1}\PY{p}{)} \PY{c+c1}{\PYZsh{}opencv默认以BGR顺序读入}
+\PY{n}{img\PYZus{}background} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}path2}\PY{p}{)}
+\PY{k}{if} \PY{n}{img\PYZus{}bxc} \PY{o+ow}{is} \PY{k+kc}{None} \PY{o+ow}{or} \PY{n}{img\PYZus{}background} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
+    \PY{k}{raise} \PY{n+ne}{FileNotFoundError}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{未读取到图片，请检查路径}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}将BGR图像转换为RGB图像，使用matplotlib显示}
+\PY{n}{img\PYZus{}bxc} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}bxc}\PY{p}{,}\PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+\PY{n}{img\PYZus{}background} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}background}\PY{p}{,}\PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}显示}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}bxc}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{BXC Original}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{on}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}background}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Background}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}可以使用opencv自带的GUI}
+\PY{c+c1}{\PYZsh{}cv2.imshow(\PYZsq{}BXC Original Picture\PYZsq{},img\PYZus{}bxc)}
+\PY{c+c1}{\PYZsh{}cv2.imshow(\PYZsq{}Background\PYZsq{},img\PYZus{}background)}
+\PY{c+c1}{\PYZsh{}cv2.waitKey(0)}
+\PY{c+c1}{\PYZsh{}cv2.destroyAllWindows}
+\end{Verbatim}
+\end{tcolorbox}
+\begin{itemize}
+	\item 导入图像----->使用cv2.imread(\textbf{‘PATH’})函数进行导入操作。\\
+	{\small *注：为方便后期的调用与修改，可以将PATH作为字符串存入新变量，然后再在cv2.imread(New Variables)中调用此新变量即可。}
+	\item 显示图像----->有两种方式，如下所示：
+	\begin{enumerate}
+		\item 使用\textbf{matplotlib库}的pyplot绘制显示，值得注意的是，在Jupyter Notebook中，只支持此种plt形式的显示。若使用opencv-python库进行imshow会卡死报错。\\
+		其具体语法如下所示：(假设图片变量名为img)\\
+		\fbox{
+		\begin{minipage}{14.6cm}
+			img\ =\ cv2.cvtColor(img,\ cv2.COLOR\_BGR2RGB) \\\#\textbf{转换色彩格式}很重要，cv2读入为BGR，而plt为RGB.\\
+			plt.imshow(img)\ \#显示图片\\
+			plt.title('\underline{\textbf{Image Title Name}}')\ \#图标题名\\
+			plt.axis('\textbf{\underline{off}/\underline{on}}')\ \#坐标轴有无\\
+			plt.show()
+		\end{minipage}}
+	\item 使用opencv-python库的cv2绘制显示。此种方法无需进行BGR--->RGB转换，但不能在Jupyter Notebook中使用。\\
+	具体语法如下所示：（假设图片变量名为img）\\
+	\fbox{
+	\begin{minipage}{14.6cm}
+		cv2.imshow('\underline{\textbf{Image Title Name}}',\ img)\ \#图片名称及显示对象\\
+		cv2.waitKey(\textit{\textbf{0}})\ \#等待退出窗口的时间(ms)，0为无限等待\\
+		cv2.destroyAllWindows()\ \#按任意键退出所有窗口
+	\end{minipage}}
+	\end{enumerate}
+\end{itemize}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_1_0.png}
+    \end{center}
+    %{ \hspace*{\fill} \\}
+    
+   \subsection{图片属性输出}
+   本小节主要展示如何输出给定图片的尺寸信息，包含其\textbf{高度}(Height)、\textbf{宽度}(Width)以及\textbf{通道数}(Channels)。
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+%\prompt{In}{incolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}输出图像尺寸(高度、宽度及通道数)}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{cv2}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+
+\PY{c+c1}{\PYZsh{}读取图像}
+\PY{n}{img\PYZus{}path1} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/bxc.jpg}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img\PYZus{}path2} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/background.jpg}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img\PYZus{}bxc} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}path1}\PY{p}{)}
+\PY{n}{img\PYZus{}background} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}path2}\PY{p}{)}
+\PY{k}{if} \PY{n}{img\PYZus{}bxc} \PY{o+ow}{is} \PY{k+kc}{None} \PY{o+ow}{or} \PY{n}{img\PYZus{}background} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
+    \PY{k}{raise} \PY{n+ne}{FileNotFoundError}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{未读取到图片，请重新检查路径}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{img\PYZus{}bxc} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}bxc}\PY{p}{,}\PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}img\PYZus{}background = cv2.cvtColor(img\PYZus{}background,cv2.BGR2RGB)}
+
+\PY{n}{height\PYZus{}1}\PY{p}{,} \PY{n}{width\PYZus{}1}\PY{p}{,} \PY{n}{channels\PYZus{}1} \PY{o}{=} \PY{n}{img\PYZus{}bxc}\PY{o}{.}\PY{n}{shape}
+\PY{n}{height\PYZus{}2}\PY{p}{,} \PY{n}{width\PYZus{}2}\PY{p}{,} \PY{n}{channels\PYZus{}2} \PY{o}{=} \PY{n}{img\PYZus{}background}\PY{o}{.}\PY{n}{shape}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{图像1尺寸: }\PY{l+s+si}{\PYZob{}}\PY{n}{height\PYZus{}1}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ * }\PY{l+s+si}{\PYZob{}}\PY{n}{width\PYZus{}1}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ * }\PY{l+s+si}{\PYZob{}}\PY{n}{channels\PYZus{}1}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{图像1高度: }\PY{l+s+si}{\PYZob{}}\PY{n}{height\PYZus{}1}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{,宽度:}\PY{l+s+si}{\PYZob{}}\PY{n}{width\PYZus{}1}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{,通道数:}\PY{l+s+si}{\PYZob{}}\PY{n}{channels\PYZus{}1}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{图像2尺寸: }\PY{l+s+si}{\PYZob{}}\PY{n}{height\PYZus{}2}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ * }\PY{l+s+si}{\PYZob{}}\PY{n}{width\PYZus{}2}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ * }\PY{l+s+si}{\PYZob{}}\PY{n}{channels\PYZus{}2}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{图像1高度: }\PY{l+s+si}{\PYZob{}}\PY{n}{height\PYZus{}2}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{,宽度:}\PY{l+s+si}{\PYZob{}}\PY{n}{width\PYZus{}2}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{,通道数:}\PY{l+s+si}{\PYZob{}}\PY{n}{channels\PYZus{}2}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+图像1尺寸: 1165 * 874 * 3
+图像1高度: 1165,宽度:874,通道数:3
+图像2尺寸: 1001 * 584 * 3
+图像1高度: 1001,宽度:584,通道数:3
+    \end{Verbatim}
+    本小节主要使用\textbf{\underline{img}}.shape语法，获得图片尺寸数据。\\
+    其中，有:
+\begin{center}
+	    $Image Data = img.shape = 
+    \begin{bmatrix}
+    	Height & Width & Channels
+    \end{bmatrix}$
+\end{center}
+	也就是说，使用img.shape得到的是一个1$\times$3的矩阵，分别为图片的高度、宽度、通道数。\\
+	之后，我们再使用print()函数进行打印输出即可。\\
+	后续当我们只需要使用图片的高度和宽度数据，而不需要通道数数据时，可以对上面矩阵进行切片。例如：
+\begin{center}
+		\fbox{
+	\begin{minipage}{14.6cm}
+		img\_height,\ img\_width\ =\ img.shape[\ :\ 2]\ \#只切片使用前两个数据
+	\end{minipage}}
+\end{center}
+
+\subsection{图片灰度转换操作}
+灰度转换操作在图像预处理部分是十分重要且实用的。其内容较为简单，本部分将详细阐述。
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+%\prompt{In}{incolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}灰度图像处理}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{cv2}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{c+c1}{\PYZsh{}导入图像}
+\PY{n}{img\PYZus{}path1} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/bxc.jpg}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img\PYZus{}path2} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/background.jpg}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img\PYZus{}bxc} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}path1}\PY{p}{)}
+\PY{n}{img\PYZus{}background} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}path2}\PY{p}{)}
+\PY{k}{if} \PY{n}{img\PYZus{}bxc} \PY{o+ow}{is} \PY{k+kc}{None} \PY{o+ow}{or} \PY{n}{img\PYZus{}background} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
+    \PY{k}{raise} \PY{n+ne}{FileNotFoundError}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{未读取到照片，检查路径后重试}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k}{else}\PY{p}{:}
+    \PY{n}{img\PYZus{}bxc\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}bxc}\PY{p}{,}\PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2GRAY}\PY{p}{)}
+    \PY{n}{img\PYZus{}background\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}background}\PY{p}{,}\PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2GRAY}\PY{p}{)}
+    
+    \PY{n}{fig}\PY{p}{,}\PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}bxc\PYZus{}gray}\PY{p}{,}\PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{BXC Gray Image}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}background\PYZus{}gray}\PY{p}{,}\PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Background Gray Image}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_3_0.png}
+    \end{center}
+    事实上，本部分依托于opencv-python库调用cv2十分简单。代码如下所示。
+\begin{center}
+	    \fbox{
+    \begin{minipage}{14.6cm}
+    	img\ =\ cv2.cvtColor(img,\ cv2.COLOR\_BGR2GRAY)\ \#\ \textbf{BGR--->GRAY}
+    \end{minipage}}
+\end{center}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+%\prompt{In}{incolor}{31}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}灰度图像转换(plt导出)}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{cv2}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{c+c1}{\PYZsh{}导入图像}
+\PY{n}{img\PYZus{}path} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/bxc.jpg}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img\PYZus{}bxc} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}path}\PY{p}{)}
+\PY{k}{if} \PY{n}{img\PYZus{}bxc} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
+    \PY{k}{raise} \PY{n+ne}{FileNotFoundError}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{未读取到照片，检查路径后重试}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k}{else}\PY{p}{:}
+    \PY{n}{img\PYZus{}bxc\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}bxc}\PY{p}{,}\PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2GRAY}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}bxc\PYZus{}gray}\PY{p}{,}\PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{on}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{BXC Gray Image}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_4_0.png}
+    \end{center}
+ %   { \hspace*{\fill} \\}
+    
+    
+    \subsection{图像变换操作}
+    此部分包含了图像的缩放操作、旋转操作及剪裁操作。下面将分步骤进行展开。
+    \subsubsection{图像缩放操作}
+    图像缩放操作主要包含两种类型：
+    	\underline{指定横纵\textbf{长宽度}放缩}、
+    	\underline{指定\textbf{缩放比例}放缩}。
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+%\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}缩放操作}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{cv2}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+
+\PY{n}{img\PYZus{}path1} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/bxc.jpg}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img\PYZus{}path2} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/background.jpg}\PY{l+s+s1}{\PYZsq{}}
+
+\PY{n}{img\PYZus{}bxc} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}path1}\PY{p}{)}
+\PY{n}{img\PYZus{}background} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}path2}\PY{p}{)}
+
+\PY{n}{img\PYZus{}bxc} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}bxc}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+
+\PY{n}{img\PYZus{}bxc\PYZus{}resized} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{resize}\PY{p}{(}\PY{n}{img\PYZus{}bxc}\PY{p}{,}\PY{p}{(}\PY{l+m+mi}{300}\PY{p}{,}\PY{l+m+mi}{200}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{}指定pixel大小}
+
+\PY{n}{scale} \PY{o}{=} \PY{l+m+mf}{0.1} \PY{c+c1}{\PYZsh{}指定缩放比例}
+\PY{n}{img\PYZus{}background\PYZus{}resized} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{resize}\PY{p}{(}\PY{n}{img\PYZus{}background}\PY{p}{,}\PY{k+kc}{None}\PY{p}{,}\PY{n}{fx} \PY{o}{=} \PY{n}{scale}\PY{p}{,}\PY{n}{fy} \PY{o}{=} \PY{n}{scale}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,}\PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}bxc\PYZus{}resized}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{BXC Resized Image 1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}background\PYZus{}resized}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Background Resized Image}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+ 对于两种不同情况的放缩方式，分别进行阐释：
+ \begin{itemize}
+	\item 指定横纵长宽度放缩（图像比例可能改变）
+\begin{center}
+		\fbox{
+	\begin{minipage}{14.6cm}
+		img\_new\ =\ cv2.resize(img,\ (\textbf{\underline{Width}},\ \textbf{\underline{Height}}))
+	\end{minipage}}
+\end{center}
+	\item 指定缩放比例放缩（图像比例不会改变）
+\begin{center}
+		\fbox{
+	\begin{minipage}{14.7cm}
+		scale\ =\ 0.1\ \# 指定缩放比例 \\
+		img\_new\ =\ cv2.resize(img,\ \textbf{None},\ fx\ =\ \textbf{\underline{scale}},\ fy\ =\ \textbf{\underline{scale}})
+	\end{minipage}}
+\end{center}
+\end{itemize}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+%\prompt{Out}{outcolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0.5, 1.0, 'Background Resized Image')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_5_1.png}
+    \end{center}
+  % { \hspace*{\fill} \\}
+    
+    \subsubsection{图像旋转操作}
+    本质上，图像旋转操作并不难，但是图像在旋转后可能会有因画布大小不足而四角无法显示全的问题。故如何实现画布自适应大小，确保旋转后图像能够被显示完全是旋转操作最大的难点。\\
+    我们所需要解决的问题无非是绕哪旋转、如何旋转、旋转多少度、是否缩放等问题。
+    \begin{itemize}
+    	\item \textbf{绕哪旋转}：要绕中心旋转，先要得到中心坐标。即是有：
+    	\begin{center}
+    		$Rotation\ Center = (X,Y) = (\frac{Width}{2},\frac{Height}{2})$
+    	\end{center}
+    	根据img.shape进行切片得到Width和Height即可。
+    	\item \textbf{旋转多少度}：给定一个参数Rotation\ Angle即可，在后续带入cv2函数。
+    	\item \textbf{缩放比例}：给定一个参数Scale即可，后续带入cv2函数。
+    \end{itemize}
+    在简单旋转的情况下，也就是不考虑四角会因画布大小不足被裁切的情况下，可以直接调用cv2.getRotationMatrix2D函数。如下所示：
+   \begin{center}
+   	 \fbox{
+    \begin{minipage}{14.6cm}
+    	\textbf{M} = cv2.getRotationMatrix2D(\textbf{\underline{Rotation Center}}, \textbf{\underline{Rotation Angle}}, \textbf{\underline{Scale}})\\
+    	img\_rotated\ =\ cv2.warpAffine(img,\ \textbf{M},\ (\textbf{Width},\textbf{Height}))\ \#更新后的矩阵重采样
+    \end{minipage}}
+   \end{center}
+   
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+%\prompt{In}{incolor}{33}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}旋转操作(难点)}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{cv2}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+
+\PY{n}{img\PYZus{}path} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/before.jpg}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img\PYZus{}before} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}path}\PY{p}{)}
+\PY{k}{if} \PY{n}{img\PYZus{}before} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
+    \PY{k}{raise} \PY{n+ne}{FileNotFoundError}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{未找到对应文件，检查路径后重试}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k}{else}\PY{p}{:}
+    \PY{n}{img\PYZus{}before} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}before}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+    \PY{n}{height}\PY{p}{,} \PY{n}{width} \PY{o}{=} \PY{n}{img\PYZus{}before}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]} \PY{c+c1}{\PYZsh{}对.shape返回的三数数组进行切片，通道数值舍弃}
+    \PY{n}{center} \PY{o}{=} \PY{p}{(}\PY{n}{width}\PY{o}{/}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{height}\PY{o}{/}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{)} \PY{c+c1}{\PYZsh{}找到对应旋转中心}
+    \PY{n}{rotation\PYZus{}angle} \PY{o}{=} \PY{l+m+mi}{30} \PY{c+c1}{\PYZsh{}逆时针旋转30deg}
+    \PY{n}{scale} \PY{o}{=} \PY{l+m+mi}{1} \PY{c+c1}{\PYZsh{}缩放系数}
+
+    \PY{c+c1}{\PYZsh{}计算旋转矩阵}
+    \PY{n}{M} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{getRotationMatrix2D}\PY{p}{(}\PY{n}{center}\PY{p}{,} \PY{n}{rotation\PYZus{}angle}\PY{p}{,} \PY{n}{scale}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}img\PYZus{}before\PYZus{}rotated = cv2.warpAffine(img\PYZus{}before, M, (width,height)) \PYZsh{}更新后的矩阵重采样}
+
+    \PY{c+c1}{\PYZsh{}cv2.imshow(\PYZsq{}\PYZlt{}before\PYZgt{} Rotated Picture\PYZsq{},img\PYZus{}before\PYZus{}rotated)}
+    \PY{c+c1}{\PYZsh{}cv2.waitKey(0)}
+    \PY{c+c1}{\PYZsh{}cv2.destroyAllWindows() \PYZsh{}显示出的四个角由于画布大小不够将会被切掉}
+
+    \PY{c+c1}{\PYZsh{}自动调整画布大小}
+    \PY{n}{cos}\PY{p}{,} \PY{n}{sin} \PY{o}{=} \PY{n+nb}{abs}\PY{p}{(}\PY{n}{M}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{,} \PY{n+nb}{abs}\PY{p}{(}\PY{n}{M}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+    \PY{n}{new\PYZus{}width} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{height}\PY{o}{*}\PY{n}{sin} \PY{o}{+} \PY{n}{width}\PY{o}{*}\PY{n}{cos}\PY{p}{)}
+    \PY{n}{new\PYZus{}height} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{width}\PY{o}{*}\PY{n}{sin} \PY{o}{+} \PY{n}{height}\PY{o}{*}\PY{n}{cos}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}补齐偏移量}
+    \PY{n}{M}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{n}{new\PYZus{}width}\PY{o}{/}\PY{l+m+mi}{2} \PY{o}{\PYZhy{}} \PY{n}{center}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{c+c1}{\PYZsh{}center[0]是width//2}
+    \PY{n}{M}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{n}{new\PYZus{}height}\PY{o}{/}\PY{l+m+mi}{2} \PY{o}{\PYZhy{}}\PY{n}{center}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{c+c1}{\PYZsh{}center[1]是height//2}
+    \PY{c+c1}{\PYZsh{}用更新后的矩阵M和扩大后的画布大小(new\PYZus{}width,new\PYZus{}height)做重采样}
+    \PY{n}{img\PYZus{}before\PYZus{}rotated} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{warpAffine}\PY{p}{(}\PY{n}{img\PYZus{}before}\PY{p}{,} \PY{n}{M} \PY{p}{,}\PY{p}{(}\PY{n}{new\PYZus{}width}\PY{p}{,}\PY{n}{new\PYZus{}height}\PY{p}{)}\PY{p}{)}
+
+    \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}before\PYZus{}rotated}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZlt{}Before\PYZgt{} Rotated Image}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{on}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+在考虑复杂旋转情况下，需要一定的数学变换来进行画布自适应大小的调节。具体数学原理如下：\\
+cv2.getRotationMatrix2D返回一个2$\times$3的仿射阵，具体如下：
+\begin{center}
+	$$M = cv2.getRotationMatrix2D =
+\begin{bmatrix}
+	cos\theta & -sin\theta & tx \\
+	sin\theta & cos\theta & ty
+\end{bmatrix}
+$$
+\end{center}
+其中，$\theta$为旋转角度，tx、ty为偏移量。\\
+旋转后所需的最小宽度$Width_{min} = Height_{Original} \times\left | sin\theta \right | + Width_{Original} \times \left | cos\theta \right |$ \\
+旋转后所需的最小高度$Height_{min} = Width_{Original} \times\left | sin\theta \right | + Height_{Original} \times \left | cos\theta \right |$\\
+画布中心有偏移，要通过tx、ty补齐偏移量。具体如下：\\
+原图中心$(\frac{Width}{2},\frac{Height}{2})$----->新画布中心$(\frac{Width_{new}}{2}, \frac{Height_{new}}{2})$
+\begin{center}
+	\begin{itemize}
+	\item tx=$M_{0,2}+= \frac{Width_{new}}{2}-center[0]$
+	\item ty=$M_{1,2}+=\frac{Height_{new}}{2}-center[1]$
+\end{itemize}
+\end{center}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_6_0.png}
+    \end{center}
+    %{ \hspace*{\fill} \\}
+    
+    \subsubsection{图像剪裁操作}
+    给出变量存储行范围与列范围，对指定范围进行裁剪。
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+%\prompt{In}{incolor}{34}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}剪裁操作}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{cv2}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+
+\PY{n}{img\PYZus{}path} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/after.jpg}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img\PYZus{}after} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}path}\PY{p}{)}
+\PY{k}{if} \PY{n}{img\PYZus{}after} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
+    \PY{k}{raise} \PY{n+ne}{FileNotFoundError}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{未找到对应文件，检查路径后重试}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k}{else}\PY{p}{:}
+    \PY{n}{img\PYZus{}after} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}after}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+    \PY{n}{y1}\PY{p}{,} \PY{n}{y2} \PY{o}{=} \PY{l+m+mi}{50}\PY{p}{,} \PY{l+m+mi}{820} \PY{c+c1}{\PYZsh{}行范围}
+    \PY{n}{x1}\PY{p}{,} \PY{n}{x2} \PY{o}{=} \PY{l+m+mi}{115}\PY{p}{,} \PY{l+m+mi}{1530} \PY{c+c1}{\PYZsh{}列范围}
+
+    \PY{n}{img\PYZus{}after\PYZus{}cropped} \PY{o}{=} \PY{n}{img\PYZus{}after}\PY{p}{[}\PY{n}{y1}\PY{p}{:}\PY{n}{y2}\PY{p}{,} \PY{n}{x1}\PY{p}{:}\PY{n}{x2}\PY{p}{]}
+
+    \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}after\PYZus{}cropped}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZlt{}After\PYZgt{} Cropped Image}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_7_0.png}
+    \end{center}
+   % { \hspace*{\fill} \\}
+    
+    给出四变量存储行范围列范围，再对目标进行切片即可。
+    
+    \subsection{图像运算操作}
+    图像运算操作包括加法运算、减法运算、乘法运算、除法运算四种。\\
+    值得注意的是，进行运算的图像必须要将图片大小统一。需要运用相似数学原理。\\
+    设原图高度为$h_0$，原图宽度为$l_0$；修改后的图像高度为$h$,宽度为$l$。\\
+    令改后的高度等于所传入的第一张图的高度，宽度根据相似原理进行计算。\\
+    则有：
+    $$\frac{h}{h_0}=\frac{l}{l_0} $$
+    $$l=\frac{h\times l_0}{h_0}$$
+    下面将详细阐释各种运算方法。
+    \subsubsection{加法运算}
+    加法运算包含平均降噪和双重曝光两种，下面将分别进行阐释。
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+%\prompt{In}{incolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}图像加法运算\PYZhy{}\PYZgt{}平均降噪}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{cv2}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{os}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{random}
+
+\PY{c+c1}{\PYZsh{}显示函数（更简便地展示多图对比）}
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{show}\PY{p}{(}\PY{n}{title}\PY{p}{,} \PY{o}{*}\PY{n}{imgs}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{}多张图片水平拼成一行，同一高度后显示}
+    \PY{n}{h0} \PY{o}{=} \PY{n}{imgs}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{c+c1}{\PYZsh{}传入的第一张图为统一高度}
+
+    \PY{n}{resized\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{img} \PY{o+ow}{in} \PY{n}{imgs}\PY{p}{:}
+        \PY{n}{resized\PYZus{}img} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{resize}\PY{p}{(}\PY{n}{img}\PY{p}{,}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{n}{img}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{*}\PY{n}{h0}\PY{o}{/}\PY{n}{img}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{,}\PY{n}{h0}\PY{p}{)}\PY{p}{)}
+        \PY{n}{resized\PYZus{}list}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{resized\PYZus{}img}\PY{p}{)}
+    \PY{n}{canvas} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{hconcat}\PY{p}{(}\PY{n}{resized\PYZus{}list}\PY{p}{)}
+    \PY{n}{canvas} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{canvas}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+
+    \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{canvas}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{n}{title}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}图像平均函数（降噪）}
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{add\PYZus{}noise}\PY{p}{(}\PY{n}{img}\PY{p}{,}\PY{n}{sigma}\PY{o}{=}\PY{l+m+mi}{25}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{}添加高斯噪声}
+    \PY{n}{noise} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{normal}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{sigma}\PY{p}{,}\PY{n}{img}\PY{o}{.}\PY{n}{shape}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}
+    \PY{k}{return} \PY{n}{cv2}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{img}\PY{p}{,} \PY{n}{noise}\PY{p}{)}
+
+\PY{n}{img\PYZus{}path} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/bxc.jpg}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img\PYZus{}bxc\PYZus{}original} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}path}\PY{p}{)}
+\PY{n}{height\PYZus{}bxc} \PY{p}{,} \PY{n}{width\PYZus{}bxc} \PY{o}{=} \PY{n}{img\PYZus{}bxc\PYZus{}original}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]}
+\PY{n}{N} \PY{o}{=} \PY{l+m+mi}{50} \PY{c+c1}{\PYZsh{}生成50张噪声图像}
+
+\PY{n}{noise\PYZus{}img\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{p}{]} \PY{c+c1}{\PYZsh{}创建随机噪声图像集}
+\PY{k}{for} \PY{n}{\PYZus{}} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{N}\PY{p}{)}\PY{p}{:}
+    \PY{n}{noise\PYZus{}img\PYZus{}list}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{add\PYZus{}noise}\PY{p}{(}\PY{n}{img\PYZus{}bxc\PYZus{}original}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}求噪声抑制的平均图像}
+\PY{n}{avg\PYZus{}noised} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{noise\PYZus{}img\PYZus{}list}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}
+
+\PY{n}{show}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Addition——Image Denoising}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{img\PYZus{}bxc\PYZus{}original}\PY{p}{,}\PY{n}{noise\PYZus{}img\PYZus{}list}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{avg\PYZus{}noised}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_8_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+%\prompt{In}{incolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}图像加法运算\PYZhy{}\PYZgt{}双重曝光}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{cv2}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{os}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{random}
+
+\PY{n}{img\PYZus{}bxc\PYZus{}path} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/bxc.jpg}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img\PYZus{}background\PYZus{}path} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/background.jpg}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img\PYZus{}bxc} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}bxc\PYZus{}path}\PY{p}{)}
+\PY{n}{img\PYZus{}background} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}background\PYZus{}path}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}色彩模式转换}
+\PY{n}{img\PYZus{}bxc} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}bxc}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+\PY{n}{img\PYZus{}background} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}background}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+
+\PY{n}{height\PYZus{}bxc} \PY{p}{,} \PY{n}{width\PYZus{}bxc} \PY{o}{=} \PY{n}{img\PYZus{}bxc}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]}
+\PY{c+c1}{\PYZsh{}调整背景图片与主体图片尺寸一致}
+\PY{n}{img\PYZus{}background} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{resize}\PY{p}{(}\PY{n}{img\PYZus{}background}\PY{p}{,}\PY{p}{(}\PY{n}{width\PYZus{}bxc}\PY{p}{,}\PY{n}{height\PYZus{}bxc}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}双重曝光加权}
+\PY{n}{double\PYZus{}exposure} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{addWeighted}\PY{p}{(}\PY{n}{img\PYZus{}bxc}\PY{p}{,}\PY{l+m+mf}{0.6}\PY{p}{,}\PY{n}{img\PYZus{}background}\PY{p}{,}\PY{l+m+mf}{0.4}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}bxc}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{BXC Image}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}background}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Background Image}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{double\PYZus{}exposure}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Double Exposure}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+%\prompt{Out}{outcolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(np.float64(-0.5), np.float64(873.5), np.float64(1164.5), np.float64(-0.5))
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_1.png}
+    \end{center}
+%    { \hspace*{\fill} \\}
+    
+    
+    \subsubsection{减法运算}
+    减法运算主要运用于静物识别，其可以将两张相同视角的不同静物照片进行相减，显示出高光部分为差异区。减去的部分为黑色阴暗区。\\
+    利用大津算法来寻找最佳二值化值，并输出最佳二值化阈值。大津二值化法用来自动对基于聚类的图像进行二值化， 或者说，将一个灰度图像退化为二值图像。
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+%\prompt{In}{incolor}{37}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}减法\PYZhy{}\PYZgt{}静物差异识别}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{cv2}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{os}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{random}
+
+\PY{n}{img\PYZus{}path\PYZus{}before} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/before.jpg}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img\PYZus{}path\PYZus{}after} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/after.jpg}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img\PYZus{}before}\PY{p}{,} \PY{n}{img\PYZus{}after} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}path\PYZus{}before}\PY{p}{)}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}path\PYZus{}after}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}色彩模式转换}
+\PY{n}{img\PYZus{}before} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}before}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+\PY{n}{img\PYZus{}after} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}after}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}修改为统一尺寸}
+\PY{n}{height\PYZus{}before}\PY{p}{,} \PY{n}{width\PYZus{}before} \PY{o}{=} \PY{n}{img\PYZus{}before}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]}
+\PY{n}{img\PYZus{}after} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{resize}\PY{p}{(}\PY{n}{img\PYZus{}after}\PY{p}{,}\PY{p}{(}\PY{n}{width\PYZus{}before}\PY{p}{,} \PY{n}{height\PYZus{}before}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}做差值图}
+\PY{n}{img\PYZus{}diff\PYZus{}abs} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{absdiff}\PY{p}{(}\PY{n}{img\PYZus{}before}\PY{p}{,} \PY{n}{img\PYZus{}after}\PY{p}{)}
+\PY{n}{img\PYZus{}diff\PYZus{}abs\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}diff\PYZus{}abs}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2GRAY}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}调用大津算法计算最佳阈值}
+\PY{n}{thresh\PYZus{}used}\PY{p}{,} \PY{n}{mask} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{threshold}\PY{p}{(}\PY{n}{img\PYZus{}diff\PYZus{}abs\PYZus{}gray}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{255}\PY{p}{,}\PY{n}{cv2}\PY{o}{.}\PY{n}{THRESH\PYZus{}BINARY} \PY{o}{+} \PY{n}{cv2}\PY{o}{.}\PY{n}{THRESH\PYZus{}OTSU}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Otsu Automatic Threshold=}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{thresh\PYZus{}used}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}before}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Before Image}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}after}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{After Image}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}diff\PYZus{}abs}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Diff. Abs. Image}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}diff\PYZus{}abs}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Diff. Abs. Image}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}diff\PYZus{}abs\PYZus{}gray}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Diff. Abs. Image Gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{mask}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Binary Diff. Abs. Image}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Otsu Automatic Threshold= 22.0
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{37}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0.5, 1.0, 'Binary Diff. Abs. Image')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_10_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_10_3.png}
+    \end{center}
+%    { \hspace*{\fill} \\}
+       
+        \subsubsection{乘法运算}
+		图像乘法是将两幅图像的对应像素值相乘，生成一幅新的图像。\\
+		乘法运算有许多用途，比如我们可以为各个像素乘上一个系数，整体提亮或减暗张图片的某个局部或整体；还可以单独提取出来图像的某一个部分。但是无论哪种用法，我们都要先为图像创建一张‘掩膜’(Mask)。它相当于量化照片的一种规则或模版。掩膜的系数不同，对图像有不同的作用。\\
+		图像的乘法运算主要包含两种类型：
+		\begin{itemize}
+			\item 二值掩膜<0\ /\ 255>
+			\item 灰度掩膜<0\ \~\ 255>
+		\end{itemize}
+    与其说乘法运算有两种类型，不如说掩膜的量化模型有两种。不过，不同的类型起到的作用不相同，具体要看情况分析。
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+%\prompt{In}{incolor}{38}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}乘法（掩膜抠图）}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{cv2}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{random}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{os}
+
+\PY{n}{img\PYZus{}bxc\PYZus{}path} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/bxc.jpg}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img\PYZus{}bxc} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}bxc\PYZus{}path}\PY{p}{)}
+\PY{n}{height\PYZus{}bxc}\PY{p}{,} \PY{n}{width\PYZus{}bxc} \PY{o}{=} \PY{n}{img\PYZus{}bxc}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]}
+\PY{c+c1}{\PYZsh{}二值掩膜}
+\PY{n}{mask\PYZus{}bin} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{height\PYZus{}bxc}\PY{p}{,}\PY{n}{width\PYZus{}bxc}\PY{p}{)}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)} \PY{c+c1}{\PYZsh{}创建黑色掩膜}
+\PY{n}{cv2}\PY{o}{.}\PY{n}{circle}\PY{p}{(}\PY{n}{mask\PYZus{}bin}\PY{p}{,}\PY{p}{(}\PY{n}{width\PYZus{}bxc}\PY{o}{/}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{height\PYZus{}bxc}\PY{o}{/}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}\PY{n+nb}{min}\PY{p}{(}\PY{n}{height\PYZus{}bxc}\PY{p}{,} \PY{n}{width\PYZus{}bxc}\PY{p}{)}\PY{o}{/}\PY{o}{/}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{255}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)} \PY{c+c1}{\PYZsh{}使黑色掩膜的中间部分出现一个白色的圆域}
+
+\PY{n}{result\PYZus{}bin} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{bitwise\PYZus{}and}\PY{p}{(}\PY{n}{img\PYZus{}bxc}\PY{p}{,} \PY{n}{img\PYZus{}bxc}\PY{p}{,} \PY{n}{mask}\PY{o}{=}\PY{n}{mask\PYZus{}bin}\PY{p}{)} \PY{c+c1}{\PYZsh{}掩膜内白色圆域内容留下，其余部分删除}
+\PY{c+c1}{\PYZsh{}灰度掩膜}
+\PY{n}{Y}\PY{p}{,} \PY{n}{X} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{ogrid}\PY{p}{[}\PY{p}{:}\PY{n}{height\PYZus{}bxc}\PY{p}{,} \PY{p}{:}\PY{n}{width\PYZus{}bxc}\PY{p}{]} \PY{c+c1}{\PYZsh{}创建欧式坐标网格}
+\PY{n}{dist} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{p}{(}\PY{n}{X}\PY{o}{\PYZhy{}}\PY{n}{width\PYZus{}bxc}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{p}{(}\PY{n}{Y}\PY{o}{\PYZhy{}}\PY{n}{height\PYZus{}bxc}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)} \PY{c+c1}{\PYZsh{}计算各个像素距离中心的欧氏距离}
+\PY{c+c1}{\PYZsh{}把距离线性映射到0–255的灰度（设定掩膜规则）}
+\PY{n}{mask\PYZus{}gray} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{clip}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{255}\PY{o}{\PYZhy{}}\PY{n}{dist}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{255}\PY{o}{/}\PY{n+nb}{min}\PY{p}{(}\PY{n}{height\PYZus{}bxc}\PY{p}{,} \PY{n}{width\PYZus{}bxc}\PY{p}{)}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{255}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}可能导致灰度变化不明显？怎么解决}
+\PY{n}{result\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{bitwise\PYZus{}and}\PY{p}{(}\PY{n}{img\PYZus{}bxc}\PY{p}{,} \PY{n}{img\PYZus{}bxc}\PY{p}{,} \PY{n}{mask}\PY{o}{=}\PY{n}{mask\PYZus{}gray}\PY{p}{)}
+
+\PY{n}{img\PYZus{}bxc} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}bxc}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+\PY{n}{mask\PYZus{}bin} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{mask\PYZus{}bin}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+\PY{n}{mask\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{mask\PYZus{}gray}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+\PY{n}{result\PYZus{}bin} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{result\PYZus{}bin}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+\PY{n}{result\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{result\PYZus{}gray}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}bxc}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{BXC Original Image}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{mask\PYZus{}bin}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Binary Mask}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{result\PYZus{}bin}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Binary Mask Image}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}bxc}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{BXC Original Image}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{mask\PYZus{}gray}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Gray Mask}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{result\PYZus{}gray}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Gray Mask Image}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+%\prompt{Out}{outcolor}{38}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0.5, 1.0, 'Gray Mask Image')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_11_1.png}
+    \end{center}
+    % { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_11_2.png}
+    \end{center}
+   % { \hspace*{\fill} \\}
+    
+    \subsubsection{除法运算}
+图像除法是两幅图像的对应像素值相除生成新图像的过程，其包含了两种不同的模型：
+\begin{itemize}
+	\item 常数除法----->均匀的将整张图片变暗
+	\item 非常数除法----->抵消光照不均匀\ 用于图像矫正
+\end{itemize}
+本质上两者的不同也是在掩膜层面上的，事实上，原图与掩膜层在光照参数上的叠加便是处理后的图像。在这一点上，乘法与除法是有共同之处的。
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+%\prompt{In}{incolor}{39}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}除法}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{cv2}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{random}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{os}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{c+c1}{\PYZsh{}常数除法\PYZhy{}\PYZhy{}\PYZhy{}\PYZgt{}把整张图均匀变暗}
+\PY{n}{img\PYZus{}bxc\PYZus{}path} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/bxc.jpg}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img\PYZus{}bxc} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}bxc\PYZus{}path}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)} \PY{c+c1}{\PYZsh{}转换成0—255的浮点数，方便做除法}
+
+\PY{n}{img\PYZus{}bxc\PYZus{}dark} \PY{o}{=} \PY{p}{(}\PY{n}{img\PYZus{}bxc}\PY{o}{/}\PY{l+m+mi}{3}\PY{p}{)}\PY{o}{.}\PY{n}{clip}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{255}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)} \PY{c+c1}{\PYZsh{}除整+截断+转换}
+\PY{n}{img\PYZus{}bxc\PYZus{}dark} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}bxc\PYZus{}dark}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}非整除法\PYZhy{}\PYZhy{}\PYZhy{}\PYZgt{}抵消光照不均(图像矫正)}
+\PY{n}{height\PYZus{}bxc}\PY{p}{,} \PY{n}{width\PYZus{}bxc} \PY{o}{=} \PY{n}{img\PYZus{}bxc}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]}
+\PY{n}{Y}\PY{p}{,} \PY{n}{X} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{ogrid}\PY{p}{[}\PY{p}{:}\PY{n}{height\PYZus{}bxc}\PY{p}{,} \PY{p}{:}\PY{n}{width\PYZus{}bxc}\PY{p}{]} \PY{c+c1}{\PYZsh{}创建网格}
+
+\PY{n}{light\PYZus{}illum} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{p}{(}\PY{n}{X}\PY{o}{\PYZhy{}}\PY{n}{width\PYZus{}bxc}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{p}{(}\PY{n}{Y}\PY{o}{\PYZhy{}}\PY{n}{height\PYZus{}bxc}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)} \PY{c+c1}{\PYZsh{}距离图片中心欧式距离}
+\PY{n}{light\PYZus{}illum} \PY{o}{=} \PY{p}{(}\PY{n}{light\PYZus{}illum}\PY{o}{/}\PY{n}{light\PYZus{}illum}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{o}{*}\PY{l+m+mf}{0.8}\PY{o}{+}\PY{l+m+mf}{0.2}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{float32}\PY{p}{)} \PY{c+c1}{\PYZsh{}归一化到0.2～1.0}
+\PY{c+c1}{\PYZsh{}light\PYZus{}illum为双通道，img\PYZus{}bxc为三通道，二者无法用np相除，办法有两种：}
+\PY{c+c1}{\PYZsh{}1.将img\PYZus{}bxc转换为img\PYZus{}bxc\PYZus{}gray(BGR\PYZhy{}\PYZgt{}GRAY),两个双通道可相除\PYZlt{}双通道灰度图\PYZgt{}}
+\PY{c+c1}{\PYZsh{}2.将light\PYZus{}illum转换为三通道\PYZlt{}三通道彩图\PYZgt{}}
+
+\PY{c+c1}{\PYZsh{}法1.双通道灰度图像}
+\PY{n}{img\PYZus{}bxc\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}bxc}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2GRAY}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}除法抵消暗区 + 0～255截断 + 格式转换}
+\PY{n}{corrected\PYZus{}img\PYZus{}2ch} \PY{o}{=} \PY{p}{(}\PY{n}{img\PYZus{}bxc\PYZus{}gray} \PY{o}{/} \PY{n}{light\PYZus{}illum}\PY{p}{)}\PY{o}{.}\PY{n}{clip}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{255}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}法2.三通道彩色图像}
+\PY{c+c1}{\PYZsh{}扩充光线模版为三通道}
+\PY{n}{light\PYZus{}illum\PYZus{}3ch} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{merge}\PY{p}{(}\PY{p}{[}\PY{n}{light\PYZus{}illum}\PY{p}{,} \PY{n}{light\PYZus{}illum}\PY{p}{,} \PY{n}{light\PYZus{}illum}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}除法抵消暗区 + 0～255截断 + 格式转换}
+\PY{n}{corrected\PYZus{}img\PYZus{}3ch} \PY{o}{=} \PY{p}{(}\PY{n}{img\PYZus{}bxc} \PY{o}{/} \PY{n}{light\PYZus{}illum\PYZus{}3ch}\PY{p}{)}\PY{o}{.}\PY{n}{clip}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{255}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}
+
+\PY{n}{img\PYZus{}bxc} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}bxc}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+\PY{n}{light\PYZus{}illum} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{light\PYZus{}illum}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+\PY{n}{corrected\PYZus{}img\PYZus{}2ch} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{corrected\PYZus{}img\PYZus{}2ch}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+\PY{n}{img\PYZus{}bxc\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}bxc\PYZus{}gray}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+\PY{n}{light\PYZus{}illum\PYZus{}3ch} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{light\PYZus{}illum\PYZus{}3ch}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+\PY{n}{corrected\PYZus{}img\PYZus{}3ch} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{corrected\PYZus{}img\PYZus{}3ch}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{12}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}bxc\PYZus{}gray}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{BXC Gray Image}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{p}{(}\PY{n}{light\PYZus{}illum}\PY{o}{*}\PY{l+m+mi}{255}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Gray Mask}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{corrected\PYZus{}img\PYZus{}2ch}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Division\PYZhy{}Illumination Correction\PYZlt{}Gray\PYZgt{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}bxc}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{BXC Original Image}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{p}{(}\PY{n}{light\PYZus{}illum\PYZus{}3ch}\PY{o}{*}\PY{l+m+mi}{255}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{3CH Mask}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{corrected\PYZus{}img\PYZus{}3ch}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Division\PYZhy{}Illumination Correction\PYZlt{}Color\PYZgt{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+%\prompt{Out}{outcolor}{39}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0.5, 1.0, 'Division-Illumination Correction<Color>')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_12_1.png}
+    \end{center}
+   % { \hspace*{\fill} \\}
+    
+    \subsection{逻辑运算}
+    一个图像可以用像素矩阵来表示，通过随机数生成一个新的像素矩阵，称之为密钥图像，将原图与密钥图像进行按位异或运算，对图像进行加密，生成一个加密图像，这是对图像的整体打码。\\
+    通常通过掩膜提取图像中感兴趣区域（ROI），再对 ROI 进行加密，这是对图像的局部打码。将加密图像与原密钥图像按位异或运算，进行解密，可以得到原图，这个过程叫做解码。\\
+    本小节将使用opencv-python库自带的haar人脸识别系统，对人脸部分进行检测与识别、并进行随机密钥打码操作，然后再次使用密钥进行反运算来解密并显示。
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+%\prompt{In}{incolor}{40}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}ROI、解码}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{cv2}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{random}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{os}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+
+\PY{c+c1}{\PYZsh{}加载人脸检测器}
+\PY{n}{face\PYZus{}cascade} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{CascadeClassifier}\PY{p}{(}\PY{n}{cv2}\PY{o}{.}\PY{n}{data}\PY{o}{.}\PY{n}{haarcascades} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{haarcascade\PYZus{}frontalface\PYZus{}default.xml}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{img\PYZus{}face\PYZus{}path} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/bxc.jpg}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{face\PYZus{}img} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}face\PYZus{}path}\PY{p}{)}
+\PY{k}{if} \PY{n}{face\PYZus{}img} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
+    \PY{k}{raise} \PY{n+ne}{FileNotFoundError}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{图像路径错误，检查路径后重试}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{face\PYZus{}img\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{face\PYZus{}img}\PY{p}{,}\PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2GRAY}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}检测脸部\PYZhy{}\PYZgt{}得到ROI掩膜}
+\PY{n}{faces} \PY{o}{=} \PY{n}{face\PYZus{}cascade}\PY{o}{.}\PY{n}{detectMultiScale}\PY{p}{(}\PY{n}{face\PYZus{}img\PYZus{}gray}\PY{p}{,} \PY{n}{scaleFactor}\PY{o}{=}\PY{l+m+mf}{1.2}\PY{p}{,} \PY{n}{minNeighbors}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}返回值faces是一个 N×4 的 numpy 数组，每行 (x, y, w, h) 代表一张人脸的左上角坐标和宽高。}
+\PY{c+c1}{\PYZsh{}创建全黑掩膜}
+\PY{n}{mask} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{face\PYZus{}img}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}   \PY{c+c1}{\PYZsh{} 单通道全黑}
+\PY{c+c1}{\PYZsh{}脸部涂白}
+\PY{k}{for} \PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{w}\PY{p}{,} \PY{n}{h}\PY{p}{)} \PY{o+ow}{in} \PY{n}{faces}\PY{p}{:}
+    \PY{n}{cv2}\PY{o}{.}\PY{n}{rectangle}\PY{p}{(}\PY{n}{mask}\PY{p}{,} \PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{n}{x}\PY{o}{+}\PY{n}{w}\PY{p}{,} \PY{n}{y}\PY{o}{+}\PY{n}{h}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{255}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}绘制在mask上，左上角，右下角，255=白，实心填充}
+\PY{c+c1}{\PYZsh{}生成随机密钥}
+\PY{n}{random\PYZus{}key} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{256}\PY{p}{,}\PY{n}{face\PYZus{}img}\PY{o}{.}\PY{n}{shape}\PY{p}{,}\PY{n}{dtype}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)} \PY{c+c1}{\PYZsh{}0\PYZhy{}255随机}
+\PY{c+c1}{\PYZsh{}生成的尺寸与face\PYZus{}img完全一样的三位数组}
+\PY{c+c1}{\PYZsh{}只对人脸区域(mask\PYZgt{}0区域)进行异或加密}
+\PY{n}{encrypted} \PY{o}{=} \PY{n}{face\PYZus{}img}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)} \PY{c+c1}{\PYZsh{}先整图复制一份，后面只改人脸部分，背景不动}
+\PY{n}{encrypted}\PY{p}{[}\PY{n}{mask} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{bitwise\PYZus{}xor}\PY{p}{(}\PY{n}{face\PYZus{}img}\PY{p}{,} \PY{n}{random\PYZus{}key}\PY{p}{)}\PY{p}{[}\PY{n}{mask} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{}再进行一次异或加密进行解密}
+\PY{n}{decrypted} \PY{o}{=} \PY{n}{encrypted}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+\PY{n}{decrypted}\PY{p}{[}\PY{n}{mask} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{bitwise\PYZus{}xor}\PY{p}{(}\PY{n}{encrypted}\PY{p}{,} \PY{n}{random\PYZus{}key}\PY{p}{)}\PY{p}{[}\PY{n}{mask} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{}色彩转换}
+\PY{n}{encrypted} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{encrypted}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+\PY{n}{decrypted} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{decrypted}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,}\PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{encrypted}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Encrypted\PYZlt{}Face ROI\PYZgt{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{decrypted}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Decrypted\PYZlt{}Face ROI\PYZgt{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+%\prompt{Out}{outcolor}{40}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0.5, 1.0, 'Decrypted<Face ROI>')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_13_1.png}
+    \end{center}
+  %  { \hspace*{\fill} \\}
+    
+    \newpage
+    \vspace*{15em}{\Huge \textbf{||\ 第三章}}\\
+    \\ \\
+    {\Huge \textbf{\LaTeX 使用基本指令}}
+    \newpage
+    \section{\LaTeX 使用基础命令}
+    \subsection{代码基本结构}
+    \begin{center}
+    	\fbox{
+    		\begin{minipage}{14.6cm}
+    			$\backslash$documentclass\{{\underline{article}}\}  \textbf{\%定义文档类型} \\
+    			$\backslash$usepackage\{\underline{amsmath}, \underline{amssymb}, \underline{geometry}, \underline{graphicx}, \underline{float}, \underline{caption}, \underline{subfigure}, \underline{booktabs}, \underline{tcolorbox}, \underline{ctex}\}  \textbf{\%引入宏包} \\
+    			$\backslash$geometry\{a4paper, margin=\underline{2.5cm}\}  \textbf{\%设置页边距} \\ \\
+    			$\backslash$title\{\textit{\underline{标题}}\}  \textbf{\%设置标题} \\
+    			$\backslash$author\{\textit{\underline{作者名1} $\backslash$thanks\{\underline{通讯作者.}\} $\backslash$and \underline{作者名2} $\backslash$and etc.}\} \textbf{\%设置作者} \\
+    			$\backslash$date\{\textit{\underline{日期}}\}  \%设置日期 \\ \\
+    			\textbf{\%正式结构~\%} \\
+    			$\backslash$begin\{document\} \\
+    			\hspace*{10pt}$\backslash$maketitle \%忘加此句会导致无标题！\\ \\
+    			\fbox{
+    				\centering
+    				\begin{minipage}{14cm}
+    					\hspace*{4pt}$\backslash$begin\{absract\} \\
+    					\hspace*{18pt}\underline{\textit{摘要部分内容.}} \textbf{\%填写摘要内容} \\
+    					\hspace*{4pt}$\backslash$end\{absract\}
+    			\end{minipage}} \\ \\
+    			$\backslash$tableofcontents \textbf{\%自动创建目录}\\
+    			$\backslash$newpage \textbf{\%换页命令} \\
+    			\fbox{
+    				\centering
+    				\begin{minipage}{14cm}
+    					\hspace*{4pt}$\backslash$section\{\underline{第一部分-标题}\} \\
+    					\hspace*{18pt}\underline{\textit{第一部分-正文}} \\
+    					\hspace*{18pt}$\backslash$subsection\{\underline{第一部分\ 第一章-标题}\} \\
+    					\hspace*{32pt}\underline{\textit{第一部分\ 第一章-正文}} \\
+    					\hspace*{32pt}$\backslash$subsubsection\{\underline{第一部分\ 第一章\ 第一节-标题}\} \\
+    					\hspace*{46pt}\underline{\textit{第一部分\ 第一章\ 第一节-正文}}
+    			\end{minipage}}
+    			
+    			$\backslash$end\{document\} 
+    	\end{minipage}}
+    \end{center}
+    {\small *注：此处$\backslash$usepackage使用的宏包已足够$\le$90\%的排版场景，在后续表\ref{table3}中将标注各宏包的功能。} \\
+    上面的代码框即为基本\LaTeX 文档结构，掌握基本结构后即可在基本结构的基础上学习细节内容，填充在结构中就可以形成一篇文章了。本章接下来的内容里，将会分类介绍、由简入繁地介绍各个部分的书写办法。 \\
+    基本步骤为：\textbf{公式 $\to$ 枚举 $\to$ 图 $\to$ 表 $\to$ 文本框 $\to$ 引用文献} 
+    \begin{table}[H]
+    	\centering
+    	\caption{\textit{$\backslash$usepackage}中的宏包及其功能}
+    	\setlength{\tabcolsep}{50pt}
+    	\begin{tabular}{c|c}
+    		\toprule
+    		\textbf{宏包名} & \textbf{功能} \\
+    		\midrule
+    		amsmath & AMS数学拓展包 \\
+    		amssymb & 数学拓展包 \\
+    		\midrule
+    		geometry & 页面设置 \\
+    		float & 图表位置设置 \\
+    		multicol & 单双栏页面编辑 \\
+    		\midrule
+    		graphicx & 插图包 \\
+    		caption & 图表标题 \\
+    		subfigure & 多图拓展包 \\
+    		booktabs & 三线表 \\
+    		tcolorbox & 文本框拓展包 \\
+    		makecell & 表格内换行 \\
+    		\bottomrule
+    	\end{tabular}
+    	\label{table3}
+    \end{table}
+    
+    \subsection{单双栏版式变换}
+    这节的出现比较矛盾，它只是一个小点，但是却又有时候很重要。但是将它放到以下任一节都略显突兀、格格不入。故此处单独拿出一节来说明下它。\\
+    \hspace*{2em}这个地方我们将会用到$\mathtt{multicol}$宏包，我将其译为多样栏功能。使用此包你可以既在某些地方使用一栏版式，又可以在某些地方分成两栏、三栏乃至更多。其基础语法很简单，只需在你想要分栏的地方加入multicols环境即可。演示如下. 
+    \begin{multicols}{2}
+    	\centering
+    	\fbox{
+    		\begin{minipage}{7cm}
+    			$\backslash$begin\{document\} \\
+    			\hspace*{2em}\textit{对于此处不在multicols环境内的内容，都是\ \underline{单栏}内容。}\\
+    			\hspace*{2em}$\backslash$begin\{multicols\}\{2\} \\
+    			\hspace*{4em}\textit{对于此在multicols环境内的内容，\LaTeX 将会自动分为\ \underline{两栏}显示。}\\
+    			\hspace*{2em}$\backslash$end\{multicols\} \\
+    			$\backslash$end\{document\}
+    	\end{minipage}}
+    	\fbox{
+    		\begin{minipage}{7cm}
+    			\vspace{2.4em}
+    			对于此处不在multicols环境内的内容，都是单栏内容。
+    			\begin{multicols}{2}
+    				\LaTeX 对于此处在multicols环境内的内容，其将会自动把内容分为两栏显示。
+    			\end{multicols} 
+    			\vspace{1.8em}
+    	\end{minipage}}
+    \end{multicols}
+    总结multicols语法为：
+    \begin{center}
+    	\fbox{
+    		\begin{minipage}{14.6cm}
+    			$\backslash$begin\{multicols\}\{\textit{\underline{{\small 分栏数目}}}\} \\
+    			\hspace*{2em}\underline{\textit{分栏内容}} \\
+    			$\backslash$end\{multicols\}
+    	\end{minipage}}
+    \end{center}
+    \subsection{公式插入}
+    在此节，将讲述普通公式的插入、公式作为转义字符在文本插入领域的应用等。由于矩阵的插入具有一定特殊性，故单独拿出一小节梳理。
+    \subsubsection{普通公式}
+    对于普通公式，大致要考虑三个问题：
+    \begin{itemize}
+    	\item 行内公式 or 行间公式 
+    	\item 编号公式 or 不编号公式 
+    	\item 单行公式 or 多行公式
+    \end{itemize}
+    可以简单画如下表\ref{table4}相应的表格，使得三个问题更加直观。
+    \begin{table}[H]
+    	\centering
+    	\caption{普通公式分类}
+    	\setlength{\tabcolsep}{20pt}
+    	\begin{tabular}{c|cc}
+    		\toprule
+    		分类 & \textbf{单行公式} & \textbf{多行公式} \\
+    		\midrule
+    		\textbf{行内公式} & 不编号公式\textbf{\textit{(Con.1)}} & -------- \\
+    		\hline
+    		\textbf{行间公式} & \makecell[c]{编号公式\textbf{\textit{(Con.2)}} \\ 不编号公式\textbf{\textit{(Con.3)}}} & \makecell[c]{编号公式\textbf{\textit{(Con.4)}} \\ 不编号公式\textbf{\textit{(Con.5)}}} \\
+    		\bottomrule
+    	\end{tabular}
+    	\label{table4}
+    \end{table}
+    
+    \begin{itemize}
+    	\item 对于\textbf{\textit{Con.1 }}$\to$ \\
+    	\fbox{
+    		\begin{minipage}{14.6cm}
+    			\$ \underline{\textit{Equation}} \$  \ \textbf{\%Equation处为输入公式}
+    	\end{minipage}}
+    	\item 对于\textbf{\textit{Con.2 }}$\to$ \\
+    	\fbox{
+    		\begin{minipage}{14.6cm}
+    			$\backslash$begin\{equation\} \\
+    			\hspace*{10pt}\underline{\textit{Equation}} \ \textbf{\%Equation处为输入公式}\\
+    			$\backslash$end\{equation\}
+    	\end{minipage}}
+    	\item 对于\textbf{\textit{Con.3 }}$\to$ \\
+    	\fbox{
+    		\begin{minipage}{14.6cm}
+    			$\backslash$begin\{equation\textbf{{\large *}}\} \ \textbf{\%只需加入*号即可不编号公式.}\\
+    			\hspace*{10pt}\underline{\textit{Equation}} \ \textbf{\%Equation处为输入公式}\\
+    			$\backslash$end\{equation\}
+    	\end{minipage}} \\
+    	另外，还有一种方式可以不编号行间公式。如下所示. \\
+    	\fbox{
+    		\begin{minipage}{14.6cm}
+    			\$\$\underline{\textit{Equation}}\$\$
+    	\end{minipage}}
+    	\item 对于\textbf{\textit{Con.4 }}$\to$ \\
+    	\fbox{
+    		\begin{minipage}{14.6cm}
+    			$\backslash$begin\{align\} \\
+    			\hspace*{10pt}\underline{\textit{Equation1}} $\backslash\backslash$\\
+    			\hspace*{10pt}\underline{\textit{Equation2}} $\backslash\backslash$\\
+    			\hspace*{10pt}\underline{\textbf{使用\&=可以在等号处对齐.}} \\
+    			$\backslash$end\{align\}
+    	\end{minipage}}
+    	\item 对于\textbf{\textit{Con.5 }}$\to$ \\
+    	\fbox{
+    		\begin{minipage}{14.6cm}
+    			$\backslash$begin\textbf{{\large *}}\{align\} \ \textbf{\%只需加入*号即可不编号此部分的全部公式.} \\
+    			\hspace*{10pt}\underline{\textit{Equation1}} $\backslash\backslash$\\
+    			\hspace*{10pt}\underline{\textit{Equation2}} $\backslash\backslash$\\
+    			\hspace*{10pt}\underline{\textbf{使用\&=可以在等号处对齐.}} \\
+    			$\backslash$end\{align\}
+    	\end{minipage}} \\
+    	此外，还可以使用多个\$\$\underline{\textit{Equation}}\$\$换行叠加来实现。如下所示. \\
+    	\fbox{
+    		\begin{minipage}{14.6cm}
+    			\$\$\underline{\textit{Equation1}} \$\$ $\backslash\backslash$ \\
+    			\$\$\underline{\textit{Equation2}} \$\$ 
+    	\end{minipage}}
+    \end{itemize}
+    \begin{tcolorbox}[colback=yellow!10,colframe=blue!50,title=\textbf{注意！}]
+    	若只想要对多行行间公式的部分公式不编号，可以采用$\backslash$notag对其进行处理。如下所示. \\
+    	\centering
+    	\fbox{
+    		\begin{minipage}{13.6cm}
+    			$\backslash$begin\{align\} \\
+    			\hspace*{10pt}\underline{\textit{Equation1}} $\backslash\backslash$\\
+    			\hspace*{10pt}\underline{\textit{Equation2}} \textbf{$\backslash$notag} $\backslash\backslash$ \textbf{\%此行公式不会被编号.} \\
+    			\hspace*{10pt}\underline{\textit{Equation3}} $\backslash\backslash$\\
+    			\hspace*{10pt}\underline{\textbf{使用\&=可以在等号处对齐.}} \\
+    			$\backslash$end\{align\}
+    	\end{minipage}}
+    \end{tcolorbox}
+    对于公式输入这一模块，除了掌握（记忆）基本的运算符之外，还应当多加练习。\LaTeX 公式的符号有很多，下面列举部分常用的\LaTeX 公式符号.（如下表\ref{table5}所示）\\
+    除此之外，关于换行与空格的知识如下。
+    \begin{enumerate}
+    	\item 空格符号
+    	\begin{itemize}
+    		\item 特殊空格符号\textbf{\~{}} $\to$ 不间断空格符，通常用于避免在两行之间断开。
+    		\item \textbf{$\backslash$+\fbox{Space键位}}$\to$ 较短的不间断空格，可以用在需要较小空格的位置。
+    		\item \textbf{$\backslash$hspace\{\underline{长度}\}} $\to$ 插入一个特定长度的空格。 \\
+    		单位：\textbf{em}{\small （字体大小单位）}/\textbf{cm}{\small （厘米）}/\textbf{pt}{\small （磅）}等。\\
+    		{\footnotesize *注：\textbf{$\backslash$hspace\textbf{{\large *}}\{\underline{长度}\}} $\to$ 强制插入一个特定长度的空格（在行首也会插入）}
+    		\item \textbf{$\backslash$quad}及\textbf{$\backslash$qquad} $\to$ 简便空格命令，分别插入1em和2em宽度的空格。
+    	\end{itemize}
+    	\item 换行符号
+    	\begin{itemize}
+    		\item \textbf{$\backslash$vspace\{\fbox{长度}\}} $\to$ 插入指定长度的垂直空白。
+    		\begin{center}
+    			\fbox{
+    				\begin{minipage}{14.6cm}
+    					第一行内容...... $\backslash\backslash$ \\
+    					$\backslash$vspace\{1cm\} \\
+    					第二行内容...... 
+    			\end{minipage}}
+    		\end{center}
+    		{\footnotesize *注：\textbf{$\backslash$vspace\textbf{{\large *}}\{\underline{长度}\}} $\to$ 强制插入一个特定长度的垂直空白（在页面顶部也会插入）.可以用于页面顶部的排版调整.}
+    		\item \textbf{$\backslash\backslash$} $\to$ 换行符，常用于表格、公式以及某些环境中强制换行。
+    		\item \textbf{$\backslash$newline} $\to$ 与$\backslash\backslash$类似，但在某些情况下更符合语法规范。
+    		\begin{center}
+    			\fbox{
+    				\begin{minipage}{14.6cm}
+    					第一行内容...... $\backslash$newline \\
+    					第二行内容...... 
+    			\end{minipage}}
+    		\end{center}
+    	\end{itemize}
+    	\item 其余功能
+    	\begin{itemize}
+    		\item \textbf{$\backslash\backslash$*} $\to$ 换行并禁止分页，适用于需要将两行内容固定在同一页的情况。
+    		\item \textbf{par环境} $\to$ 在par环境中的内容会自动根据页面宽带换行。\\
+    			\fbox{
+    				\begin{minipage}{14.6cm}
+    					$\backslash$begin\{par\} \\
+    					\hspace*{10pt}\underline{长文本内容可以自动根据页面宽度换行}.\\
+    					$\backslash$end\{par\} 
+    			\end{minipage}}
+
+    	\end{itemize}
+    \end{enumerate}
+    \begin{table}[H]
+    	\centering
+    	\caption{常用的\LaTeX 公式符号}
+    	\setlength{\tabcolsep}{10pt}
+    	\begin{tabular}{cc|cc|cc|cc}
+    		\toprule
+    		\textbf{符号} & \textbf{语法} & \textbf{符号} & \textbf{语法} & \textbf{符号} & \textbf{语法} & \textbf{符号} & \textbf{语法} \\
+    		\midrule
+    		$\alpha$ & $\backslash$alpha & $\beta$ & $\backslash$beta & $\gamma$ & $\backslash$gamma & $\theta$ & $\backslash$theta \\
+    		$\varepsilon$ & $\backslash$varepsilon & $\delta$ & $\backslash$delta & $\mu$ & $\backslash$mu & $\nu$ & $\backslash$nu \\
+    		$\eta$ & $\backslash$eta & $\zeta$ & $\backslash$zeta & $\lambda$ & $\backslash$lambda & $\psi$ & $\backslash$psi \\
+    		$\sigma$ & $\backslash$sigma & $\xi$ & $\backslash$xi & $\tau$ & $\backslash$tau & $\phi$ & $\backslash$phi \\
+    		$\varphi$ & $\backslash$varphi & $\rho$ & $\backslash$rho & $\chi$ & $\backslash$chi & $\omega$ & $\backslash$omega \\
+    		$\pi$ & $\backslash$ pi &  &  &  &  &  &  \\
+    		\midrule
+    		$\Sigma$ & $\backslash$Sigma & $\Pi$ & $\backslash$Pi & $\Delta$ & $\backslash$Delta & $\Gamma$ & $\backslash$Gamma \\
+    		$\Psi$ & $\backslash$Psi & $\Theta$ & $\backslash$Theta & $\Lambda$ & $\backslash$Lambda & $\Omega$ & $\backslash$Omega \\
+    		$\Phi$ & $\backslash$Phi & $\Xi$ & $\backslash$Xi &  &  &  &  \\
+    		\midrule
+    		$+$ & + & $-$ & - & $\times$ & $\backslash$times & $\div$ & $\backslash$div \\
+    		$\partial$ & $\backslash$partial & $\infty$ & $\backslash$infty & $\to$ & $\backslash$to & $\gets$ & $\backslash$gets \\	
+    		\midrule
+    		$\sum$ & $\backslash$sum & $\prod$ & $\backslash$prod & $\int$ & $\backslash$int & $\oint$ & $\backslash$oint \\
+    		$\iint$ & $\backslash$iint & $\iiint$ & $\backslash$iiint & $\frac{a}{b}$ & $\backslash$frac\{a\}\{b\} & $\vec{a}$ & $\backslash$vec\{a\} \\
+    		$\sqrt{x}$ & $\backslash$sqrt\{x\} & $\sqrt[n]{x}$ & $\backslash$sqrt[n]\{x\} & $\dot{a}$ & $\backslash$dot\{a\} & $\ddot{a}$ & $\backslash$ddot\{a\} \\
+    		${f}'(x)$ & \{\underline{\textit{f}}\}$'(x)$ & ${f}''(x)$ & \{\underline{\textit{f}}\}$''(x)$ & $x^{n}$ & \textit{x}\^{}\{\textit{n}\} & $x_{n}$ & \textit{x}\_\{\textit{n}\} \\
+    		\bottomrule
+    	\end{tabular}
+    	\label{table5}
+    \end{table}
+    
+    \subsubsection{矩阵}
+    矩阵环境分为pmatrix、bmatrix、Bmatrix、vmatrix、Vmatrix、matrix六种，接下来将逐步展开说明各种形式的矩阵形状。对于所有环境的矩阵，一大共性是\underline{\&表示分割元素，而$\backslash\backslash$表示换行}。
+    \begin{enumerate}
+    	\item \textbf{pmatrix}环境下的矩阵
+    	\begin{multicols}{2}
+    		\centering
+    		%col1
+    		\fbox{
+    			\begin{minipage}{7cm}
+    				A= \\
+    				\hspace*{2em}$\backslash$begin\{pmatrix\} \\
+    				\hspace*{4em} a\_{}\{11\} \ \& \ a\_{}\{12\} $\backslash\backslash$\\
+    				\hspace*{4em} a\_{}\{21\} \ \& \ a\_{}\{22\} \\
+    				\hspace*{2em} $\backslash$end\{pmatrix\}
+    		\end{minipage}}
+    		%col2
+    		\fbox{
+    			\begin{minipage}{7cm}
+    				\vspace{1em}
+    				\begin{equation*}
+    					{\Large A = \newline
+    						\begin{pmatrix}
+    							a_{11} & a_{12} \\
+    							a_{21} & a_{22}
+    					\end{pmatrix}}
+    				\end{equation*}
+    				\vspace{1em}
+    		\end{minipage}}
+    	\end{multicols}
+    	
+    	\item \textbf{bmatrix}环境下的矩阵
+    	\begin{multicols}{2}
+    		\centering
+    		%col1
+    		\fbox{
+    			\begin{minipage}{7cm}
+    				A= \\
+    				\hspace*{2em}$\backslash$begin\{bmatrix\} \\
+    				\hspace*{4em} a\_{}\{11\} \ \& \ a\_{}\{12\} $\backslash\backslash$\\
+    				\hspace*{4em} a\_{}\{21\} \ \& \ a\_{}\{22\} \\
+    				\hspace*{2em} $\backslash$end\{bmatrix\}
+    		\end{minipage}}
+    		%col2
+    		\fbox{
+    			\begin{minipage}{7cm}
+    				\vspace{1em}
+    				\begin{equation*}
+    					{\Large A = \newline
+    						\begin{bmatrix}
+    							a_{11} & a_{12} \\
+    							a_{21} & a_{22}
+    					\end{bmatrix}}
+    				\end{equation*}
+    				\vspace{1em}
+    		\end{minipage}}
+    	\end{multicols}
+    	
+    	\item \textbf{Bmatrix}环境下的矩阵
+    	\begin{multicols}{2}
+    		\centering
+    		%col1
+    		\fbox{
+    			\begin{minipage}{7cm}
+    				A= \\
+    				\hspace*{2em}$\backslash$begin\{Bmatrix\} \\
+    				\hspace*{4em} a\_{}\{11\} \ \& \ a\_{}\{12\} $\backslash\backslash$\\
+    				\hspace*{4em} a\_{}\{21\} \ \& \ a\_{}\{22\} \\
+    				\hspace*{2em} $\backslash$end\{Bmatrix\}
+    		\end{minipage}}
+    		%col2
+    		\fbox{
+    			\begin{minipage}{7cm}
+    				\vspace{1em}
+    				\begin{equation*}
+    					{\Large A = \newline
+    						\begin{Bmatrix}
+    							a_{11} & a_{12} \\
+    							a_{21} & a_{22}
+    					\end{Bmatrix}}
+    				\end{equation*}
+    				\vspace{1em}
+    		\end{minipage}}
+    	\end{multicols}
+    	
+    	\item \textbf{vmatrix}环境下的矩阵
+    	\begin{multicols}{2}
+    		\centering
+    		%col1
+    		\fbox{
+    			\begin{minipage}{7cm}
+    				A= \\
+    				\hspace*{2em}$\backslash$begin\{vmatrix\} \\
+    				\hspace*{4em} a\_{}\{11\} \ \& \ a\_{}\{12\} $\backslash\backslash$\\
+    				\hspace*{4em} a\_{}\{21\} \ \& \ a\_{}\{22\} \\
+    				\hspace*{2em} $\backslash$end\{vmatrix\}
+    		\end{minipage}}
+    		%col2
+    		\fbox{
+    			\begin{minipage}{7cm}
+    				\vspace{1em}
+    				\begin{equation*}
+    					{\Large A = \newline
+    						\begin{vmatrix}
+    							a_{11} & a_{12} \\
+    							a_{21} & a_{22}
+    					\end{vmatrix}}
+    				\end{equation*}
+    				\vspace{1em}
+    		\end{minipage}}
+    	\end{multicols}
+    	
+    	\item \textbf{Vmatrix}环境下的矩阵
+    	\begin{multicols}{2}
+    		\centering
+    		%col1
+    		\fbox{
+    			\begin{minipage}{7cm}
+    				A= \\
+    				\hspace*{2em}$\backslash$begin\{Vmatrix\} \\
+    				\hspace*{4em} a\_{}\{11\} \ \& \ a\_{}\{12\} $\backslash\backslash$\\
+    				\hspace*{4em} a\_{}\{21\} \ \& \ a\_{}\{22\} \\
+    				\hspace*{2em} $\backslash$end\{Vmatrix\}
+    		\end{minipage}}
+    		%col2
+    		\fbox{
+    			\begin{minipage}{7cm}
+    				\vspace{1em}
+    				\begin{equation*}
+    					{\Large A = \newline
+    						\begin{Vmatrix}
+    							a_{11} & a_{12} \\
+    							a_{21} & a_{22}
+    					\end{Vmatrix}}
+    				\end{equation*}
+    				\vspace{1em}
+    		\end{minipage}}
+    	\end{multicols}
+    	
+    	\item \textbf{matrix}环境下的矩阵
+    	\begin{multicols}{2}
+    		\centering
+    		%col1
+    		\fbox{
+    			\begin{minipage}{7cm}
+    				A= \\
+    				\hspace*{2em}$\backslash$begin\{matrix\} \\
+    				\hspace*{4em} a\_{}\{11\} \ \& \ a\_{}\{12\} $\backslash\backslash$\\
+    				\hspace*{4em} a\_{}\{21\} \ \& \ a\_{}\{22\} \\
+    				\hspace*{2em} $\backslash$end\{matrix\}
+    		\end{minipage}}
+    		%col2
+    		\fbox{
+    			\begin{minipage}{7cm}
+    				\vspace{1em}
+    				\begin{equation*}
+    					{\Large A = \newline
+    						\begin{matrix}
+    							a_{11} & a_{12} \\
+    							a_{21} & a_{22}
+    					\end{matrix}}
+    				\end{equation*}
+    				\vspace{1em}
+    		\end{minipage}}
+    	\end{multicols}
+    \end{enumerate}
+    {\small *注：所有矩阵必须存在于数学环境下.（即equation*或equation环境）}
+    
+    \subsubsection{转义符号}
+    本小节较为简单.大致将转义字符分为两类：
+    \begin{enumerate}
+    	\item \textbf{基本类} \ $\to$ 基本的一些符号，如\# , \$ , \% , \& , \{ , \} , \_ 等。\\
+    	\fbox{
+    		\centering
+    		\begin{minipage}{14.6cm}
+    			\# , \$ , \% , \& , \{ , \} , \_ \ \ \ $\to$ \ \ \ $\backslash$\# , $\backslash$\$ , $\backslash$\% , $\backslash$\& , $\backslash$\{ , $\backslash$\} , $\backslash$\_.
+    	\end{minipage}} 
+    	\item \textbf{特殊类} \ $\to$ 比较特殊的符号，如\^{} ,\--{} , $\backslash$等。
+    	\begin{itemize}
+    		\item \textbf{\^{}符号} \ $\to$ \  \fbox{$\backslash$\^{}\{\}}
+    		\item \textbf{\--{}\ 符号} \ $\to$ \  \fbox{$\backslash$- -\{\}}
+    		\item \textbf{$\backslash$ 符号} \  $\to$ \  \fbox{\$$\backslash$backslash\$ \ \ (公式转义)}\ \ 或 \ \ \fbox{$\backslash$verb|$\backslash$| \ \ 文本转义}
+    	\end{itemize}
+    \end{enumerate}
+    \subsection{枚举}
+    枚举主要分为两种，一种为不计数分条枚举，一种为计数分条枚举。
+    \begin{enumerate}
+    	\item 不计数分条枚举
+    	\begin{multicols}{2}
+    		\centering
+    		%col1
+    		\fbox{
+    			\begin{minipage}{7cm}
+    				$\backslash$begin\{itemize\} \\
+    				\hspace*{2em}$\backslash$item \textit{\underline{第一条内容}} \\
+    				\hspace*{2em}$\backslash$item \textit{\underline{第二条内容}} \\
+    				\hspace*{2em}... ...\\
+    				\hspace*{2em}$\backslash$item \textit{\underline{第n条内容}} \\
+    				$\backslash$end\{itemize\}
+    		\end{minipage}}
+    		%col2
+    		\fbox{
+    			\begin{minipage}{7cm}
+    				\vspace{0.3em}
+    				\begin{itemize}
+    					\item \textit{\underline{第一条内容}} 
+    					\item \textit{\underline{第二条内容}} \\
+    					... ...
+    					\item \textit{\underline{第n条内容}}
+    				\end{itemize}
+    				\vspace{0.25em}
+    		\end{minipage}}
+    	\end{multicols}
+    	\item 计数分条列举
+    	\begin{multicols}{2}
+    		\centering
+    		\fbox{
+    			\begin{minipage}{7cm}
+    				$\backslash$begin\{enumerate\} \\
+    				\hspace*{2em}$\backslash$item \underline{\textit{第一条内容}} \\
+    				\hspace*{2em}$\backslash$item \textit{\underline{第二条内容}} \\
+    				\hspace*{2em}... ... \\
+    				\hspace*{2em}$\backslash$item \textit{\underline{第n条内容}} \\
+    				$\backslash$end\{enumerate\}
+    		\end{minipage}}
+    		\fbox{
+    			\begin{minipage}{7cm}
+    				\vspace{0.3em}
+    				\begin{enumerate}
+    					\item \textit{\underline{第一条内容}} 
+    					\item \underline{\textit{第二条内容}} \\
+    					... ...
+    					\item \textit{\underline{第n条内容}}
+    				\end{enumerate}
+    				\vspace{0.25em}
+    		\end{minipage}}
+    	\end{multicols}
+    \end{enumerate}
+    \subsection{图片插入}
+    本小节介绍如何借助$\mathtt{\backslash graphicx}$插入单图，以及借助$\mathtt{\backslash graphicx 、\backslash subfigure}$库插入多图。共通之处是都需要借助一个$\backslash$begin\{figure\}环境。
+    \subsubsection{单图插入}
+    单图插入语法较为简单，如下所示。
+    \begin{center}
+    	\fbox{
+    		\begin{minipage}{14.6cm}
+    			$\backslash$begin\{figure\}\ [H] \hspace{2em}
+    			{\small \% 此处H为$\backslash$float包中固定图片位置的指令 }\\
+    			\hspace*{2em}$\backslash$centering \hspace{2em} {\small \%表示使图片居中} \\
+    			\hspace*{2em}$\backslash$includegraphics[\underline{\textit{width=0.5$\backslash$textwidth}}]\{图片路径名\} \\
+    			\hspace*{2em}{\small \% 此处width表示0.5倍文字宽度，此外还有scale=\ \textit{\underline{缩放倍数}}、height=\ \textit{\underline{图片高度}}等指令。}\\
+    			\hspace*{2em}{\small \%比如[scale=0.75]指的是缩放为原图比例的0.75倍，[height=5cm]则指图片高度为5cm。}
+    			\hspace*{2em}$\backslash$caption\{图名\} \\
+    			\hspace*{2em}$\backslash$label\{图名引用ID\} \\
+    			$\backslash$end\{figure\}
+    	\end{minipage}}
+    \end{center}
+    \subsubsection{多图插入}
+    多图插入的语法在单图插入的基础上，加入subfigure语法即可，然后分别对图片进行定义。对分图片的定义同样有includegraphics、lable的步骤，但不一样的是，对于图片的标题，是在subfigure函数后以一 \textbf{\underline{[ ]}}号框起输入。示例语法如下所示。
+    \begin{center}
+    	\fbox{
+    		\begin{minipage}{14.6cm}
+    			$\backslash$begin\{figure\}[H] \\
+    			\hspace*{2em}$\backslash$centering \hspace{2em}\%使得图片居中 \\
+    			\hspace*{2em}$\backslash$subfigure[图A图名] \\
+    			\hspace*{4em}$\backslash$lable\{图名引用ID\textit{\textbf{<A>}}\} \\
+    			\hspace*{4em}$\backslash$includegraphics[\underline{\textit{width=0.5$\backslash$textwidth}}]\{图片路径名\} \\
+    			\hspace*{2em}$\backslash$subfigure[图B图名] \\
+    			\hspace*{4em}$\backslash$lable\{图名引用ID\textit{\textbf{<B>}}\} \\
+    			\hspace*{4em}$\backslash$includegraphics[\underline{\textit{width=0.5$\backslash$textwidth}}]\{图片路径名\} \\
+    			\hspace*{2em}$\backslash$caption\{总图名\} \\
+    			\hspace*{2em}$\backslash$lable\{总图名引用ID\} \\
+    			$\backslash$end\{figure\}
+    	\end{minipage}}
+    \end{center}
+    \subsection{表格插入}
+    表格插入仅介绍两种常用的表格样式，一是常用的三线表，二是常用的正常框线的表格。
+    \begin{itemize}
+    	\item 三线表 
+       	\begin{multicols}{2}
+    		\fbox{
+    			\begin{minipage}{7cm}
+    				$\backslash$begin\{table\}[H]\\{\small \%此处的[H]指令为固定位置(float宏包)}\\
+    				\hspace*{2em}$\backslash$centering\\
+    				\hspace*{2em}$\backslash$caption\{表名\}\\
+    				\hspace*{2em}$\backslash$label\{表名引用ID\}\\
+    				\hspace*{2em}$\backslash$setlength\{$\backslash$tabcolsep\}\{10pt\}\\
+    				{\small \hspace*{2em}\%列间距调整，默认6pt.}\\
+    				\hspace*{2em}$\backslash$begin\{tabular\}\{\fbox{@\{\}}llc\fbox{@\{\}}\}\\
+    				{\small \hspace*{2em}\%@\{\}的作用为取消表格左右间距.}\\
+    				{\small \hspace*{2em}\%llc表示三列对齐方式LeftLeftCenter}\\
+    				{\small \hspace*{2em}\%除了[l],[c]对齐方式外，还有[r]$\to$right.}\\
+    				\hspace*{4em}$\backslash$toprule\\
+    				\hspace*{6em}xx \& xx \& xx $\backslash\backslash$\\
+    				\hspace*{4em}$\backslash$midrule\\
+    				\hspace*{6em}xx \& xx \& xx $\backslash\backslash$\\
+    				\hspace*{6em}xx \& xx \& xx $\backslash\backslash$\\
+    				\hspace*{4em}$\backslash$bottomrule\\
+    				\hspace*{2em}$\backslash$end\{tabular\}\\
+    				$\backslash$end\{table\}
+    		\end{minipage}}
+    		\fbox{
+    			\begin{minipage}{7cm}
+    				\vspace{6.45em}
+    				\begin{table}[H]
+    					\centering
+    					\caption{示例表名}
+    					\label{Tab.1}
+    					\setlength{\tabcolsep}{10pt}
+    					\begin{tabular}{@{}llc@{}}
+    						\toprule
+    						行1列1 & 行1列2 & 行1列3 \\
+    						\midrule
+    						行2列1 & 行2列2 & 行2列3 \\
+    						行3列1 & 行3列2 & 行3列3 \\
+    						行4列1 & 行4列2 & 行4列3 \\
+    						行5列1 & 行5列2 & 行5列3 \\
+    						行6列1 & 行6列2 & 行6列3 \\
+    						\bottomrule
+    					\end{tabular}
+    				\end{table}
+    				\vspace{7.4em}
+    		\end{minipage}}
+    	\end{multicols}
+    	需要注意的是，我们还可以通过在llc之间加入“｜”符号，实现表格竖向线条的添加。这点在全线表中会得到体现。
+    	\item 全线表
+    	\begin{multicols}{2}
+    		\fbox{
+    			\begin{minipage}{7cm}
+    				$\backslash$begin\{table\}[H]\\{\small \%此处的[H]指令为固定位置(float宏包)}\\
+    				\hspace*{2em}$\backslash$centering\\
+    				\hspace*{2em}$\backslash$caption\{表名\}\\
+    				\hspace*{2em}$\backslash$label\{表名引用ID\}\\
+    				\hspace*{2em}$\backslash$setlength\{$\backslash$tabcolsep\}\{10pt\}\\
+    				{\small \hspace*{2em}\%列间距调整，默认6pt.}\\
+    				\hspace*{2em}$\backslash$begin\{tabular\}\{\fbox{@\{\}}|l|l|c|\fbox{@\{\}}\}\\
+    				{\small \hspace*{2em}\%@\{\}的作用为取消表格左右间距.}\\
+    				{\small \hspace*{2em}\%llc表示三列对齐方式LeftLeftCenter}\\
+    				{\small \hspace*{2em}\%除了[l],[c]对齐方式外，还有[r]$\to$right.}\\
+    				\hspace*{4em}$\backslash$hline\\
+    				\hspace*{6em}xx \& xx \& xx $\backslash\backslash$\\
+    				\hspace*{4em}$\backslash$hline\\
+    				\hspace*{6em}xx \& xx \& xx $\backslash\backslash$\\
+    				\hspace*{6em}xx \& xx \& xx $\backslash\backslash$\\
+    				\hspace*{4em}$\backslash$hline\\
+    				\hspace*{2em}$\backslash$end\{tabular\}\\
+    				$\backslash$end\{table\}
+    		\end{minipage}}
+    		\fbox{
+    			\begin{minipage}{7cm}
+    				\vspace{6.45em}
+    				\begin{table}[H]
+    					\centering
+    					\caption{示例表名}
+    					\label{Tab.2}
+    					\setlength{\tabcolsep}{10pt}
+    					\begin{tabular}{@{}|l|l|c|@{}}
+    						\hline
+    						行1列1 & 行1列2 & 行1列3 \\
+    						\hline
+    						行2列1 & 行2列2 & 行2列3 \\
+    						行3列1 & 行3列2 & 行3列3 \\
+    						行4列1 & 行4列2 & 行4列3 \\
+    						行5列1 & 行5列2 & 行5列3 \\
+    						行6列1 & 行6列2 & 行6列3 \\
+    						\hline
+    					\end{tabular}
+    				\end{table}
+    				\vspace{8.4em}
+    		\end{minipage}}
+    	\end{multicols}
+    \end{itemize}
+    \subsection{文本框插入}
+    \subsubsection{基于$\backslash$fbox简单文本框}
+    \begin{itemize}
+    	\item 单行文本框\\
+    	\fbox{
+    		\begin{minipage}{14.6cm}
+    			$\backslash$fbox\{单行内容\}
+    	\end{minipage}}\\
+    	注意，这种语法仅能为单行，且仅能根据键入字符数目来创建对应长度的方框。\\
+    	且在文本过长时无法换行，文本将溢出文本框。
+    	\item 多行文本框\\
+    	\fbox{
+    		\begin{minipage}{14.6cm}
+    			$\backslash$fbox\{\\
+    			\hspace*{2em}$\backslash$begin\{minipage\}\{\textbf{\textit{框宽}}\}\\
+    			\hspace*{4em}正文内容，可使用$\backslash$语法换行\\
+    			\hspace*{2em}$\backslash$end\{minipage\}\\
+    			\hspace*{2em}\%需要新建一个minipage(分页)来实现此功能。\\
+    			\}
+    	\end{minipage}}
+    \end{itemize}
+    \subsubsection{基于$\backslash$tcolorbox复杂文本框}
+    这种插入方法需要通过$\backslash$语法进行换行。相关语法如下所示。
+    \begin{multicols}{2}
+    	\fbox{
+    		\begin{minipage}{5cm}
+    			\vspace*{0.2em}
+    			标题\ xxx(\textbf{\textit{colframe}})\\
+    			\textbf{---------------------------------}\\
+    			正文\ x\ x\ x\ x\ x\ x\ x\ x\ x\ x\ x\ x\ x\\
+    			x\ x\ x\ x\ x\ x\ x\ x\ x\ x\ x(\textbf{\textit{colback}})
+    			\vspace{0.1em}
+    	\end{minipage}}
+    	\fbox{
+    		\begin{minipage}{9.5cm}
+    			$\backslash$begin\{tcolorbox\}[colback=yellow!10,colframe=blue!50,\\
+    			title=标题]\\
+    			\hspace*{2em}正文部分$\backslash\backslash$\ \%!后数字用来调节颜色透明度\\
+    			\hspace*{2em}正文第二行\\
+    			$\backslash$end\{tcolorbox\}
+    	\end{minipage}}
+    \end{multicols}
+    \subsection{引用插入}
+    \subsubsection{正文引用}
+    \begin{itemize}
+    	\item 在正文中想要插入引用角标的地方加入$\backslash$lable\{引用ID\}
+    	\item 然后在对应地方插入$\backslash$ref\{引用ID\}
+    \end{itemize}
+    \subsubsection{文献引用}
+    \begin{itemize}
+    	\item 在.tex文件所在文件夹创建一.bib文件，内需放置BiBTex内容
+    	\item 在所需要正文引用的位置插入$\backslash$cite\{引用ID\}
+    	\item 文章末尾引用文献，键入以下文本：
+    	\begin{center}
+    		\fbox{
+    			\begin{minipage}{14cm}
+    				$\backslash$bibliographystyle\{nnsrt\}\\
+    				$\backslash$bibliography\{\textbf{\textit{\underline{xxx(所创建的.bib文件名)}}}\}
+    		\end{minipage}}
+    	\end{center}
+    \end{itemize}
+    
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
