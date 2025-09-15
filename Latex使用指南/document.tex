@@ -1,0 +1,865 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, geometry, graphicx, float, caption, subfigure, booktabs, tcolorbox, makecell, multicol, ctex}
+
+\geometry{a4paper, margin=2.5cm}
+\title{\LaTeX\ \&\ Python环境向导}
+\author{Guo\ Jiatong\thanks{作者,E-mail:guojiatom2006@outlook.com}}
+\date{2025年\ 夏}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		机器视觉授课内容包括四部分，分别为数字图像处理技术、机器视觉技术、机器学习技术、深度学习技术四部分。通过本课学习，希望掌握使用VSCode编辑器及Python语言在视觉学习方面的应用。\\
+		同时，通过本课程，希望能够全程使用\LaTeX 进行笔记记录。
+	\end{abstract}
+	
+	\tableofcontents
+	\newpage
+	
+	\section{Python环境配置}
+		\subsection{Windows系统情况下的相关配置}
+			使用\underline{Anaconda} 作为Python内核，搭配VSCode作为编辑器可完成相关设置。
+			具体步骤如下:
+			\begin{enumerate}
+				\item 在Anaconda Prompt中搭建环境，指令为“conda create -n \fbox{环境名} python=\fbox{版本号}”。\\
+				例如，欲想搭建一个名为\underline{myenv}的Python版本为\underline{3.11.11}的环境，我们可以输入以下指令:
+				\begin{center}
+					\fbox{
+					\begin{minipage}{14.6cm}
+						conda create -n myenv python=3.11.11
+					\end{minipage}}
+				\end{center}
+				
+				\item 搭建完虚拟环境后，要将其激活。\\
+				激活指令为“conda activate \fbox{环境名}”。假设已经以“myenv”搭建好环境，我们可以输入以下指令以进入此虚拟环境。（若不进行此步骤，后续安装包的过程中则会直接安装在base基环境下）
+				\begin{center}
+					\fbox{
+						\begin{minipage}{14.6cm}
+							conda activate myenv
+						\end{minipage}}
+				\end{center}
+				
+				\item 完成环境激活后，则可以安装相应的软件包。\\
+				一些较为常见的软件包如下表1所示：
+				\begin{table}[H]
+					\centering
+					\caption{常见Python软件包汇总}
+					\setlength{\tabcolsep}{15pt}
+					\begin{tabular}{@{}c|c|c|c@{}}
+						\toprule
+							\textbf{Package} & \textbf{Package} & \textbf{Package} & \textbf{Package} \\
+						\midrule
+							absl-py & cachetools & certifi & charset-normalizer \\
+							cloudpickle & colorama & contourpy & cycler \\
+							et-xmlfile & filelock & fonttools & google-auth \\
+							google-auth-oauthlib & grpcio & gym & gym-notices \\
+							idna & Jinja2 & kiwisolver & Markdown \\
+							MarkupSafe & \textbf{matplotlib} & mpmath & networkx \\
+							\textbf{numpy} & oauthlib & \textbf{opencv-python} & openpyxl \\
+							packaging & \textbf{pandas} & \textbf{pathlib} & \textbf{pillow} \\
+							\textbf{pip} & protobuf & pyasn1 & pyasn1 \verb*|_| modules \\
+							pyparsing & python-dateutil & pytz & \textbf{PyYAML} \\
+							requests & requests-oauthlib & rsa & \textbf{scipy} \\
+							\textbf{seaborn} & setuptools & six & sympy \\
+							\textbf{tensorboard} & tensorboardX & \textbf{tk} & \textbf{torch} \\
+							torchaudio & torchvision & \textbf{tqdm} & tzdata \\
+							urllib3 & Werkzeug & wheel & xlrd \\
+						\bottomrule
+					\end{tabular}
+					\label{table1}
+				\end{table}
+				可以使用“pip install \fbox{Package}”指令安装相关软件包，其中Package为表\ref{table1}中的软件包或其之外的软件包。假设欲安装\underline{numpy}软件包，我们可以输入如下指令：\\
+				\fbox{
+				\centering
+				\begin{minipage}{14.6cm}
+					pip install numpy
+				\end{minipage}}
+		
+				\begin{tcolorbox}[colback=yellow!10,colframe=blue!50,title=\textbf{注意！}]
+					上述指令可能安装最新版本的对应的软件包或者是最适配当前Python版本的软件包。如果想要安装指定版本的软件包，应当使用“pip install \fbox{Package}==\fbox{Version}”指令。以安装2.2.6版本的numpy包为例：\\
+					\fbox{
+					\centering
+					\begin{minipage}{13.6cm}
+						pip install numpy==2.2.6
+					\end{minipage}}
+				\end{tcolorbox}
+				
+				\item 其余的部分有用指令见下表\ref{table2}.
+				\begin{table}[H]
+					\centering
+					\caption{部分其他conda指令}
+					\setlength{\tabcolsep}{10pt}
+					\begin{tabular}{@{}c|c@{}}
+						\toprule
+							\textbf{指令} & \textbf{代码} \\
+						\midrule
+							删除环境中的包 & pip uninstall \fbox{Package} \\
+							删除环境 & conda remove -n \fbox{Env.name} \\
+							退出虚拟环境（回到base） & detective \\
+							查看虚拟环境中的包库 & pip list \\
+							查看Env列表（可以用于改环境名） & conda env list \\
+						\bottomrule
+					\end{tabular}
+					\label{table2}
+				\end{table}
+				
+			\end{enumerate}
+		
+		\subsection{Mac系统情况下的相关配置}
+			对于Mac系统，我们可以直接使用系统带有的终端进行配置，而不需要安装Anaconda。不过我们需要在终端中安装Homebrew，此插件源为Github，有时内网可能不灵，解决方案是多试几次或者科学上网（可以使用Infiniport）。
+			
+			\begin{enumerate}
+				\item 首先可以使用指令来检测Mac是否自带Python。指令如下:
+				\begin{center}
+					\fbox{
+						\begin{minipage}{14.6cm}
+							python --version   \underline{(对于Mac自带Python版本为2.x)} \\
+							python3 --version \underline{(对于大部分Mac Python版本为3.x)}
+						\end{minipage}}
+				\end{center}
+				
+				\item 若无预置Python，则需要通过Homebrew包管理器来安装最新的Python版本。如果还没有安装Homebrew，应先安装它。（源在Github，或许需要科学上网\textbf{> >} \underline{infiniport.xyz})\\
+				在终端中输入：
+				\begin{center}
+					\fbox{
+					\begin{minipage}{14.6cm}
+						/bin/bash~-c~"~\$(curl~-fsSL~\\ https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+					\end{minipage}}
+				\end{center}
+				
+			\item Homebrew安装完成后，使用其安装Python。指令为：
+			\begin{center}
+				\fbox{
+					\begin{minipage}{14.6cm}
+						brew install python
+					\end{minipage}}
+			\end{center}
+			
+			\item 为了避免不同项目之间的冲突，应搭建虚拟环境，并在虚拟环境中搭建对应的包。此步骤大体包含\underline{创建虚拟环境}、\underline{激活虚拟环境}、\underline{在虚拟环境中安装包}、\underline{退出虚拟环境}四部分。\\
+			首先，创建虚拟环境。以搭建环境名为“myenv”的Python环境为例，其代码如下所示。
+			\begin{center}
+				\fbox{
+					\begin{minipage}{14.6cm}
+						python3 -m venv myenv
+					\end{minipage}}
+			\end{center}
+			
+			然后，激活虚拟环境，代码如下所示。
+			\begin{center}
+				\fbox{
+					\begin{minipage}{14.6cm}
+						source myenv/bin/activate
+					\end{minipage}}
+			\end{center}
+			
+			在所创建的虚拟环境中安装对应的软件包，以安装numpy包为例，代码如下所示。
+			\begin{center}
+				\fbox{
+					\begin{minipage}{14.6cm}
+						pip install numpy
+					\end{minipage}}
+			\end{center}
+			
+			最后，所有上述步骤完成后，可以使用\underline{deactivate}指令退出虚拟环境，并在IDE中进行配置，不再过多赘述。
+			\end{enumerate}
+	
+	\section{\LaTeX 使用基础命令}
+		\subsection{代码基本结构}
+			\begin{center}
+				\fbox{
+					\begin{minipage}{14.6cm}
+						$\backslash$documentclass\{{\underline{article}}\}  \textbf{\%定义文档类型} \\
+						$\backslash$usepackage\{\underline{amsmath}, \underline{amssymb}, \underline{geometry}, \underline{graphicx}, \underline{float}, \underline{caption}, \underline{subfigure}, \underline{booktabs}, \underline{tcolorbox}, \underline{ctex}\}  \textbf{\%引入宏包} \\
+						$\backslash$geometry\{a4paper, margin=\underline{2.5cm}\}  \textbf{\%设置页边距} \\ \\
+						$\backslash$title\{\textit{\underline{标题}}\}  \textbf{\%设置标题} \\
+						$\backslash$author\{\textit{\underline{作者名1} $\backslash$thanks\{\underline{通讯作者.}\} $\backslash$and \underline{作者名2} $\backslash$and etc.}\} \textbf{\%设置作者} \\
+						$\backslash$date\{\textit{\underline{日期}}\}  \%设置日期 \\ \\
+						\textbf{\%正式结构~\%} \\
+						$\backslash$begin\{document\} \\
+						\hspace*{10pt}$\backslash$maketitle \%忘加此句会导致无标题！\\ \\
+						\fbox{
+							\centering
+							\begin{minipage}{14cm}
+								\hspace*{4pt}$\backslash$begin\{absract\} \\
+								\hspace*{18pt}\underline{\textit{摘要部分内容.}} \textbf{\%填写摘要内容} \\
+								\hspace*{4pt}$\backslash$end\{absract\}
+							\end{minipage}} \\ \\
+						$\backslash$tableofcontents \textbf{\%自动创建目录}\\
+						$\backslash$newpage \textbf{\%换页命令} \\
+						\fbox{
+							\centering
+							\begin{minipage}{14cm}
+								\hspace*{4pt}$\backslash$section\{\underline{第一部分-标题}\} \\
+								\hspace*{18pt}\underline{\textit{第一部分-正文}} \\
+								\hspace*{18pt}$\backslash$subsection\{\underline{第一部分\ 第一章-标题}\} \\
+								\hspace*{32pt}\underline{\textit{第一部分\ 第一章-正文}} \\
+								\hspace*{32pt}$\backslash$subsubsection\{\underline{第一部分\ 第一章\ 第一节-标题}\} \\
+								\hspace*{46pt}\underline{\textit{第一部分\ 第一章\ 第一节-正文}}
+						\end{minipage}}
+					
+						$\backslash$end\{document\} 
+					\end{minipage}}
+			\end{center}
+			{\small *注：此处$\backslash$usepackage使用的宏包已足够$\le$90\%的排版场景，在后续表\ref{table3}中将标注各宏包的功能。} \\
+			上面的代码框即为基本\LaTeX 文档结构，掌握基本结构后即可在基本结构的基础上学习细节内容，填充在结构中就可以形成一篇文章了。本章接下来的内容里，将会分类介绍、由简入繁地介绍各个部分的书写办法。 \\
+			基本步骤为：\textbf{公式 $\to$ 枚举 $\to$ 图 $\to$ 表 $\to$ 文本框 $\to$ 引用文献} 
+			\begin{table}[H]
+				\centering
+				\caption{\textit{$\backslash$usepackage}中的宏包及其功能}
+				\setlength{\tabcolsep}{50pt}
+				\begin{tabular}{c|c}
+					\toprule
+						\textbf{宏包名} & \textbf{功能} \\
+					\midrule
+						amsmath & AMS数学拓展包 \\
+						amssymb & 数学拓展包 \\
+					\midrule
+						geometry & 页面设置 \\
+						float & 图表位置设置 \\
+						multicol & 单双栏页面编辑 \\
+					\midrule
+						graphicx & 插图包 \\
+						caption & 图表标题 \\
+						subfigure & 多图拓展包 \\
+						booktabs & 三线表 \\
+						tcolorbox & 文本框拓展包 \\
+						makecell & 表格内换行 \\
+					\bottomrule
+				\end{tabular}
+				\label{table3}
+			\end{table}
+			
+		\subsection{单双栏版式变换}
+		这节的出现比较矛盾，它只是一个小点，但是却又有时候很重要。但是将它放到以下任一节都略显突兀、格格不入。故此处单独拿出一节来说明下它。\\
+		\hspace*{2em}这个地方我们将会用到$\mathtt{multicol}$宏包，我将其译为多样栏功能。使用此包你可以既在某些地方使用一栏版式，又可以在某些地方分成两栏、三栏乃至更多。其基础语法很简单，只需在你想要分栏的地方加入multicols环境即可。演示如下. 
+		\begin{multicols}{2}
+			\centering
+			\fbox{
+				\begin{minipage}{7cm}
+					$\backslash$begin\{document\} \\
+					\hspace*{2em}\textit{对于此处不在multicols环境内的内容，}\hspace*{2em}\textit{都是\ \underline{单栏}内容。}\\
+					\hspace*{2em}$\backslash$begin\{multicols\}\{2\} \\
+					\hspace*{4em}\textit{对于此在multicols环境内的内容，}\hspace*{4em}\textit{\LaTeX 将会自动分为\ \underline{两栏}显示。}\\
+					\hspace*{2em}$\backslash$end\{multicols\} \\
+					$\backslash$end\{document\}
+				\end{minipage}}
+			\fbox{
+				\begin{minipage}{7cm}
+					\vspace{2.4em}
+					对于此处不在multicols环境内的内容，都是单栏内容。
+					\begin{multicols}{2}
+						\LaTeX 对于此处在multicols环境内的内容，其将会自动把内容分为两栏显示。
+					\end{multicols} 
+				\vspace{1.8em}
+			\end{minipage}}
+		\end{multicols}
+		总结multicols语法为：
+	\begin{center}
+			\fbox{
+			\begin{minipage}{14.6cm}
+				$\backslash$begin\{multicols\}\{\textit{\underline{{\small 分栏数目}}}\} \\
+					\hspace*{2em}\underline{\textit{分栏内容}} \\
+				$\backslash$end\{multicols\}
+			\end{minipage}}
+	\end{center}
+		\subsection{公式插入}
+		在此节，将讲述普通公式的插入、公式作为转义字符在文本插入领域的应用等。由于矩阵的插入具有一定特殊性，故单独拿出一小节梳理。
+			\subsubsection{普通公式}
+			对于普通公式，大致要考虑三个问题：
+				\begin{itemize}
+					\item 行内公式 or 行间公式 
+					\item 编号公式 or 不编号公式 
+					\item 单行公式 or 多行公式
+				\end{itemize}
+			可以简单画如下表\ref{table4}相应的表格，使得三个问题更加直观。
+				\begin{table}[H]
+					\centering
+					\caption{普通公式分类}
+					\setlength{\tabcolsep}{20pt}
+					\begin{tabular}{c|cc}
+						\toprule
+							分类 & \textbf{单行公式} & \textbf{多行公式} \\
+						\midrule
+							\textbf{行内公式} & 不编号公式\textbf{\textit{(Con.1)}} & -------- \\
+						\hline
+							\textbf{行间公式} & \makecell[c]{编号公式\textbf{\textit{(Con.2)}} \\ 不编号公式\textbf{\textit{(Con.3)}}} & \makecell[c]{编号公式\textbf{\textit{(Con.4)}} \\ 不编号公式\textbf{\textit{(Con.5)}}} \\
+						\bottomrule
+					\end{tabular}
+					\label{table4}
+				\end{table}
+				
+			\begin{itemize}
+				\item 对于\textbf{\textit{Con.1 }}$\to$ \\
+				\fbox{
+					\begin{minipage}{14.6cm}
+						\$ \underline{\textit{Equation}} \$  \ \textbf{\%Equation处为输入公式}
+					\end{minipage}}
+				\item 对于\textbf{\textit{Con.2 }}$\to$ \\
+				\fbox{
+					\begin{minipage}{14.6cm}
+						$\backslash$begin\{equation\} \\
+						\hspace*{10pt}\underline{\textit{Equation}} \ \textbf{\%Equation处为输入公式}\\
+						$\backslash$end\{equation\}
+					\end{minipage}}
+				\item 对于\textbf{\textit{Con.3 }}$\to$ \\
+				\fbox{
+					\begin{minipage}{14.6cm}
+						$\backslash$begin\{equation\textbf{{\large *}}\} \ \textbf{\%只需加入*号即可不编号公式.}\\
+						\hspace*{10pt}\underline{\textit{Equation}} \ \textbf{\%Equation处为输入公式}\\
+						$\backslash$end\{equation\}
+					\end{minipage}} \\
+				另外，还有一种方式可以不编号行间公式。如下所示. \\
+				\fbox{
+					\begin{minipage}{14.6cm}
+						\$\$\underline{\textit{Equation}}\$\$
+					\end{minipage}}
+				\item 对于\textbf{\textit{Con.4 }}$\to$ \\
+				\fbox{
+					\begin{minipage}{14.6cm}
+						$\backslash$begin\{align\} \\
+						\hspace*{10pt}\underline{\textit{Equation1}} $\backslash\backslash$\\
+						\hspace*{10pt}\underline{\textit{Equation2}} $\backslash\backslash$\\
+						\hspace*{10pt}\underline{\textbf{使用\&=可以在等号处对齐.}} \\
+						$\backslash$end\{align\}
+					\end{minipage}}
+				\item 对于\textbf{\textit{Con.5 }}$\to$ \\
+				\fbox{
+					\begin{minipage}{14.6cm}
+						$\backslash$begin\textbf{{\large *}}\{align\} \ \textbf{\%只需加入*号即可不编号此部分的全部公式.} \\
+						\hspace*{10pt}\underline{\textit{Equation1}} $\backslash\backslash$\\
+						\hspace*{10pt}\underline{\textit{Equation2}} $\backslash\backslash$\\
+						\hspace*{10pt}\underline{\textbf{使用\&=可以在等号处对齐.}} \\
+						$\backslash$end\{align\}
+				\end{minipage}} \\
+				此外，还可以使用多个\$\$\underline{\textit{Equation}}\$\$换行叠加来实现。如下所示. \\
+				\fbox{
+					\begin{minipage}{14.6cm}
+						\$\$\underline{\textit{Equation1}} \$\$ $\backslash\backslash$ \\
+						\$\$\underline{\textit{Equation2}} \$\$ 
+					\end{minipage}}
+			\end{itemize}
+			\begin{tcolorbox}[colback=yellow!10,colframe=blue!50,title=\textbf{注意！}]
+				若只想要对多行行间公式的部分公式不编号，可以采用$\backslash$notag对其进行处理。如下所示. \\
+				\centering
+				\fbox{
+					\begin{minipage}{13.6cm}
+						$\backslash$begin\{align\} \\
+						\hspace*{10pt}\underline{\textit{Equation1}} $\backslash\backslash$\\
+						\hspace*{10pt}\underline{\textit{Equation2}} \textbf{$\backslash$notag} $\backslash\backslash$ \textbf{\%此行公式不会被编号.} \\
+						\hspace*{10pt}\underline{\textit{Equation3}} $\backslash\backslash$\\
+						\hspace*{10pt}\underline{\textbf{使用\&=可以在等号处对齐.}} \\
+						$\backslash$end\{align\}
+					\end{minipage}}
+			\end{tcolorbox}
+			对于公式输入这一模块，除了掌握（记忆）基本的运算符之外，还应当多加练习。\LaTeX 公式的符号有很多，下面列举部分常用的\LaTeX 公式符号.（如下表\ref{table5}所示）\\
+			除此之外，关于换行与空格的知识如下。
+			\begin{enumerate}
+				\item 空格符号
+					\begin{itemize}
+						\item 特殊空格符号\textbf{\~{}} $\to$ 不间断空格符，通常用于避免在两行之间断开。
+						\item \textbf{$\backslash$+\fbox{Space键位}}$\to$ 较短的不间断空格，可以用在需要较小空格的位置。
+						\item \textbf{$\backslash$hspace\{\underline{长度}\}} $\to$ 插入一个特定长度的空格。 \\
+						单位：\textbf{em}{\small （字体大小单位）}/\textbf{cm}{\small （厘米）}/\textbf{pt}{\small （磅）}等。\\
+						{\footnotesize *注：\textbf{$\backslash$hspace\textbf{{\large *}}\{\underline{长度}\}} $\to$ 强制插入一个特定长度的空格（在行首也会插入）}
+						\item \textbf{$\backslash$quad}及\textbf{$\backslash$qquad} $\to$ 简便空格命令，分别插入1em和2em宽度的空格。
+					\end{itemize}
+				\item 换行符号
+					\begin{itemize}
+						\item \textbf{$\backslash$vspace\{\fbox{长度}\}} $\to$ 插入指定长度的垂直空白。
+						\begin{center}
+							\fbox{
+								\begin{minipage}{14.6cm}
+									第一行内容...... $\backslash\backslash$ \\
+									$\backslash$vspace\{1cm\} \\
+									第二行内容...... 
+								\end{minipage}}
+						\end{center}
+						{\footnotesize *注：\textbf{$\backslash$vspace\textbf{{\large *}}\{\underline{长度}\}} $\to$ 强制插入一个特定长度的垂直空白（在页面顶部也会插入）.可以用于页面顶部的排版调整.}
+						\item \textbf{$\backslash\backslash$} $\to$ 换行符，常用于表格、公式以及某些环境中强制换行。
+						\item \textbf{$\backslash$newline} $\to$ 与$\backslash\backslash$类似，但在某些情况下更符合语法规范。
+							\begin{center}
+								\fbox{
+									\begin{minipage}{14.6cm}
+										第一行内容...... $\backslash$newline \\
+										第二行内容...... 
+									\end{minipage}}
+							\end{center}
+					\end{itemize}
+				\item 其余功能
+					\begin{itemize}
+						\item \textbf{$\backslash\backslash$*} $\to$ 换行并禁止分页，适用于需要将两行内容固定在同一页的情况。
+						\item \textbf{par环境} $\to$ 在par环境中的内容会自动根据页面宽带换行。
+						\begin{center}
+							\fbox{
+								\begin{minipage}{14.6cm}
+									$\backslash$begin\{par\} \\
+									\hspace*{10pt}\underline{长文本内容可以自动根据页面宽度换行}.\\
+									$\backslash$end\{par\} 
+								\end{minipage}}
+						\end{center}
+					\end{itemize}
+			\end{enumerate}
+			\begin{table}[H]
+				\centering
+				\caption{常用的\LaTeX 公式符号}
+				\setlength{\tabcolsep}{10pt}
+				\begin{tabular}{cc|cc|cc|cc}
+					\toprule
+						\textbf{符号} & \textbf{语法} & \textbf{符号} & \textbf{语法} & \textbf{符号} & \textbf{语法} & \textbf{符号} & \textbf{语法} \\
+					\midrule
+						$\alpha$ & $\backslash$alpha & $\beta$ & $\backslash$beta & $\gamma$ & $\backslash$gamma & $\theta$ & $\backslash$theta \\
+						$\varepsilon$ & $\backslash$varepsilon & $\delta$ & $\backslash$delta & $\mu$ & $\backslash$mu & $\nu$ & $\backslash$nu \\
+						$\eta$ & $\backslash$eta & $\zeta$ & $\backslash$zeta & $\lambda$ & $\backslash$lambda & $\psi$ & $\backslash$psi \\
+						$\sigma$ & $\backslash$sigma & $\xi$ & $\backslash$xi & $\tau$ & $\backslash$tau & $\phi$ & $\backslash$phi \\
+						$\varphi$ & $\backslash$varphi & $\rho$ & $\backslash$rho & $\chi$ & $\backslash$chi & $\omega$ & $\backslash$omega \\
+						$\pi$ & $\backslash$ pi &  &  &  &  &  &  \\
+					\midrule
+						$\Sigma$ & $\backslash$Sigma & $\Pi$ & $\backslash$Pi & $\Delta$ & $\backslash$Delta & $\Gamma$ & $\backslash$Gamma \\
+						$\Psi$ & $\backslash$Psi & $\Theta$ & $\backslash$Theta & $\Lambda$ & $\backslash$Lambda & $\Omega$ & $\backslash$Omega \\
+						$\Phi$ & $\backslash$Phi & $\Xi$ & $\backslash$Xi &  &  &  &  \\
+					\midrule
+						$+$ & + & $-$ & - & $\times$ & $\backslash$times & $\div$ & $\backslash$div \\
+						$\partial$ & $\backslash$partial & $\infty$ & $\backslash$infty & $\to$ & $\backslash$to & $\gets$ & $\backslash$gets \\	
+					\midrule
+						$\sum$ & $\backslash$sum & $\prod$ & $\backslash$prod & $\int$ & $\backslash$int & $\oint$ & $\backslash$oint \\
+						$\iint$ & $\backslash$iint & $\iiint$ & $\backslash$iiint & $\frac{a}{b}$ & $\backslash$frac\{a\}\{b\} & $\vec{a}$ & $\backslash$vec\{a\} \\
+						$\sqrt{x}$ & $\backslash$sqrt\{x\} & $\sqrt[n]{x}$ & $\backslash$sqrt[n]\{x\} & $\dot{a}$ & $\backslash$dot\{a\} & $\ddot{a}$ & $\backslash$ddot\{a\} \\
+						${f}'(x)$ & \{\underline{\textit{f}}\}$'(x)$ & ${f}''(x)$ & \{\underline{\textit{f}}\}$''(x)$ & $x^{n}$ & \textit{x}\^{}\{\textit{n}\} & $x_{n}$ & \textit{x}\_\{\textit{n}\} \\
+					\bottomrule
+				\end{tabular}
+				\label{table5}
+			\end{table}
+			
+			\subsubsection{矩阵}
+				矩阵环境分为pmatrix、bmatrix、Bmatrix、vmatrix、Vmatrix、matrix六种，接下来将逐步展开说明各种形式的矩阵形状。对于所有环境的矩阵，一大共性是\underline{\&表示分割元素，而$\backslash\backslash$表示换行}。
+				\begin{enumerate}
+					\item \textbf{pmatrix}环境下的矩阵
+					\begin{multicols}{2}
+						\centering
+						%col1
+						\fbox{
+						\begin{minipage}{7cm}
+							A= \\
+							\hspace*{2em}$\backslash$begin\{pmatrix\} \\
+							\hspace*{4em} a\_{}\{11\} \ \& \ a\_{}\{12\} $\backslash\backslash$\\
+							\hspace*{4em} a\_{}\{21\} \ \& \ a\_{}\{22\} \\
+							\hspace*{2em} $\backslash$end\{pmatrix\}
+						\end{minipage}}
+						%col2
+						\fbox{
+						\begin{minipage}{7cm}
+							\vspace{1em}
+							\begin{equation*}
+								{\Large A = \newline
+								\begin{pmatrix}
+									a_{11} & a_{12} \\
+									a_{21} & a_{22}
+								\end{pmatrix}}
+							\end{equation*}
+							\vspace{1em}
+						\end{minipage}}
+					\end{multicols}
+					
+					\item \textbf{bmatrix}环境下的矩阵
+					\begin{multicols}{2}
+						\centering
+						%col1
+						\fbox{
+							\begin{minipage}{7cm}
+								A= \\
+								\hspace*{2em}$\backslash$begin\{bmatrix\} \\
+								\hspace*{4em} a\_{}\{11\} \ \& \ a\_{}\{12\} $\backslash\backslash$\\
+								\hspace*{4em} a\_{}\{21\} \ \& \ a\_{}\{22\} \\
+								\hspace*{2em} $\backslash$end\{bmatrix\}
+						\end{minipage}}
+						%col2
+						\fbox{
+							\begin{minipage}{7cm}
+								\vspace{1em}
+								\begin{equation*}
+									{\Large A = \newline
+										\begin{bmatrix}
+											a_{11} & a_{12} \\
+											a_{21} & a_{22}
+									\end{bmatrix}}
+								\end{equation*}
+								\vspace{1em}
+						\end{minipage}}
+					\end{multicols}
+					
+					\item \textbf{Bmatrix}环境下的矩阵
+					\begin{multicols}{2}
+						\centering
+						%col1
+						\fbox{
+							\begin{minipage}{7cm}
+								A= \\
+								\hspace*{2em}$\backslash$begin\{Bmatrix\} \\
+								\hspace*{4em} a\_{}\{11\} \ \& \ a\_{}\{12\} $\backslash\backslash$\\
+								\hspace*{4em} a\_{}\{21\} \ \& \ a\_{}\{22\} \\
+								\hspace*{2em} $\backslash$end\{Bmatrix\}
+						\end{minipage}}
+						%col2
+						\fbox{
+							\begin{minipage}{7cm}
+								\vspace{1em}
+								\begin{equation*}
+									{\Large A = \newline
+										\begin{Bmatrix}
+											a_{11} & a_{12} \\
+											a_{21} & a_{22}
+									\end{Bmatrix}}
+								\end{equation*}
+								\vspace{1em}
+						\end{minipage}}
+					\end{multicols}
+					
+					\item \textbf{vmatrix}环境下的矩阵
+					\begin{multicols}{2}
+						\centering
+						%col1
+						\fbox{
+							\begin{minipage}{7cm}
+								A= \\
+								\hspace*{2em}$\backslash$begin\{vmatrix\} \\
+								\hspace*{4em} a\_{}\{11\} \ \& \ a\_{}\{12\} $\backslash\backslash$\\
+								\hspace*{4em} a\_{}\{21\} \ \& \ a\_{}\{22\} \\
+								\hspace*{2em} $\backslash$end\{vmatrix\}
+						\end{minipage}}
+						%col2
+						\fbox{
+							\begin{minipage}{7cm}
+								\vspace{1em}
+								\begin{equation*}
+									{\Large A = \newline
+										\begin{vmatrix}
+											a_{11} & a_{12} \\
+											a_{21} & a_{22}
+									\end{vmatrix}}
+								\end{equation*}
+								\vspace{1em}
+						\end{minipage}}
+					\end{multicols}
+					
+					\item \textbf{Vmatrix}环境下的矩阵
+					\begin{multicols}{2}
+						\centering
+						%col1
+						\fbox{
+							\begin{minipage}{7cm}
+								A= \\
+								\hspace*{2em}$\backslash$begin\{Vmatrix\} \\
+								\hspace*{4em} a\_{}\{11\} \ \& \ a\_{}\{12\} $\backslash\backslash$\\
+								\hspace*{4em} a\_{}\{21\} \ \& \ a\_{}\{22\} \\
+								\hspace*{2em} $\backslash$end\{Vmatrix\}
+						\end{minipage}}
+						%col2
+						\fbox{
+							\begin{minipage}{7cm}
+								\vspace{1em}
+								\begin{equation*}
+									{\Large A = \newline
+										\begin{Vmatrix}
+											a_{11} & a_{12} \\
+											a_{21} & a_{22}
+									\end{Vmatrix}}
+								\end{equation*}
+								\vspace{1em}
+						\end{minipage}}
+					\end{multicols}
+					
+					\item \textbf{matrix}环境下的矩阵
+					\begin{multicols}{2}
+						\centering
+						%col1
+						\fbox{
+							\begin{minipage}{7cm}
+								A= \\
+								\hspace*{2em}$\backslash$begin\{matrix\} \\
+								\hspace*{4em} a\_{}\{11\} \ \& \ a\_{}\{12\} $\backslash\backslash$\\
+								\hspace*{4em} a\_{}\{21\} \ \& \ a\_{}\{22\} \\
+								\hspace*{2em} $\backslash$end\{matrix\}
+						\end{minipage}}
+						%col2
+						\fbox{
+							\begin{minipage}{7cm}
+								\vspace{1em}
+								\begin{equation*}
+									{\Large A = \newline
+										\begin{matrix}
+											a_{11} & a_{12} \\
+											a_{21} & a_{22}
+									\end{matrix}}
+								\end{equation*}
+								\vspace{1em}
+						\end{minipage}}
+					\end{multicols}
+				\end{enumerate}
+				{\small *注：所有矩阵必须存在于数学环境下.（即equation*或equation环境）}
+				
+			\subsubsection{转义符号}
+			本小节较为简单.大致将转义字符分为两类：
+			\begin{enumerate}
+				\item \textbf{基本类} \ $\to$ 基本的一些符号，如\# , \$ , \% , \& , \{ , \} , \_ 等。\\
+				\fbox{
+					\centering
+					\begin{minipage}{14.6cm}
+						\# , \$ , \% , \& , \{ , \} , \_ \ \ \ $\to$ \ \ \ $\backslash$\# , $\backslash$\$ , $\backslash$\% , $\backslash$\& , $\backslash$\{ , $\backslash$\} , $\backslash$\_.
+					\end{minipage}} 
+				\item \textbf{特殊类} \ $\to$ 比较特殊的符号，如\^{} ,\--{} , $\backslash$等。
+					\begin{itemize}
+						\item \textbf{\^{}符号} \ $\to$ \  \fbox{$\backslash$\^{}\{\}}
+						\item \textbf{\--{}\ 符号} \ $\to$ \  \fbox{$\backslash$- -\{\}}
+						\item \textbf{$\backslash$ 符号} \  $\to$ \  \fbox{\$$\backslash$backslash\$ \ \ (公式转义)}\ \ 或 \ \ \fbox{$\backslash$verb|$\backslash$| \ \ 文本转义}
+					\end{itemize}
+			\end{enumerate}
+		\subsection{枚举}
+		枚举主要分为两种，一种为不计数分条枚举，一种为计数分条枚举。
+		\begin{enumerate}
+			\item 不计数分条枚举
+				\begin{multicols}{2}
+					\centering
+					%col1
+					\fbox{
+						\begin{minipage}{7cm}
+							$\backslash$begin\{itemize\} \\
+							\hspace*{2em}$\backslash$item \textit{\underline{第一条内容}} \\
+							\hspace*{2em}$\backslash$item \textit{\underline{第二条内容}} \\
+							\hspace*{2em}... ...\\
+							\hspace*{2em}$\backslash$item \textit{\underline{第n条内容}} \\
+							$\backslash$end\{itemize\}
+						\end{minipage}}
+					%col2
+					\fbox{
+						\begin{minipage}{7cm}
+							\vspace{0.3em}
+							\begin{itemize}
+								\item \textit{\underline{第一条内容}} 
+								\item \textit{\underline{第二条内容}} \\
+								... ...
+								\item \textit{\underline{第n条内容}}
+							\end{itemize}
+							\vspace{0.25em}
+						\end{minipage}}
+				\end{multicols}
+			\item 计数分条列举
+			\begin{multicols}{2}
+				\centering
+				\fbox{
+					\begin{minipage}{7cm}
+						$\backslash$begin\{enumerate\} \\
+						\hspace*{2em}$\backslash$item \underline{\textit{第一条内容}} \\
+						\hspace*{2em}$\backslash$item \textit{\underline{第二条内容}} \\
+						\hspace*{2em}... ... \\
+						\hspace*{2em}$\backslash$item \textit{\underline{第n条内容}} \\
+						$\backslash$end\{enumerate\}
+					\end{minipage}}
+				\fbox{
+					\begin{minipage}{7cm}
+						\vspace{0.3em}
+						\begin{enumerate}
+							\item \textit{\underline{第一条内容}} 
+							\item \underline{\textit{第二条内容}} \\
+							... ...
+							\item \textit{\underline{第n条内容}}
+						\end{enumerate}
+						\vspace{0.25em}
+				\end{minipage}}
+			\end{multicols}
+		\end{enumerate}
+		\subsection{图片插入}
+		本小节介绍如何借助$\mathtt{\backslash graphicx}$插入单图，以及借助$\mathtt{\backslash graphicx 、\backslash subfigure}$库插入多图。共通之处是都需要借助一个$\backslash$begin\{figure\}环境。
+			\subsubsection{单图插入}
+			单图插入语法较为简单，如下所示。
+			\begin{center}
+					\fbox{
+						\begin{minipage}{14.6cm}
+							$\backslash$begin\{figure\}\ [H] \hspace{2em}
+							{\small \% 此处H为$\backslash$float包中固定图片位置的指令 }\\
+							\hspace*{2em}$\backslash$centering \hspace{2em} {\small \%表示使图片居中} \\
+							\hspace*{2em}$\backslash$includegraphics[\underline{\textit{width=0.5$\backslash$textwidth}}]\{图片路径名\} \\
+							\hspace*{2em}{\small \% 此处width表示0.5倍文字宽度，此外还有scale=\ \textit{\underline{缩放倍数}}、height=\ \textit{\underline{图片高度}}等指令。}\\
+							\hspace*{2em}{\small \%比如[scale=0.75]指的是缩放为原图比例的0.75倍，[height=5cm]则指图片高度为5cm。}
+							\hspace*{2em}$\backslash$caption\{图名\} \\
+							\hspace*{2em}$\backslash$label\{图名引用ID\} \\
+							$\backslash$end\{figure\}
+						\end{minipage}}
+			\end{center}
+			\subsubsection{多图插入}
+			多图插入的语法在单图插入的基础上，加入subfigure语法即可，然后分别对图片进行定义。对分图片的定义同样有includegraphics、lable的步骤，但不一样的是，对于图片的标题，是在subfigure函数后以一 \textbf{\underline{[ ]}}号框起输入。示例语法如下所示。
+			\begin{center}
+				\fbox{
+					\begin{minipage}{14.6cm}
+						$\backslash$begin\{figure\}[H] \\
+						\hspace*{2em}$\backslash$centering \hspace{2em}\%使得图片居中 \\
+						\hspace*{2em}$\backslash$subfigure[图A图名] \\
+						\hspace*{4em}$\backslash$lable\{图名引用ID\textit{\textbf{<A>}}\} \\
+						\hspace*{4em}$\backslash$includegraphics[\underline{\textit{width=0.5$\backslash$textwidth}}]\{图片路径名\} \\
+						\hspace*{2em}$\backslash$subfigure[图B图名] \\
+						\hspace*{4em}$\backslash$lable\{图名引用ID\textit{\textbf{<B>}}\} \\
+						\hspace*{4em}$\backslash$includegraphics[\underline{\textit{width=0.5$\backslash$textwidth}}]\{图片路径名\} \\
+						\hspace*{2em}$\backslash$caption\{总图名\} \\
+						\hspace*{2em}$\backslash$lable\{总图名引用ID\} \\
+						$\backslash$end\{figure\}
+					\end{minipage}}
+			\end{center}
+		\subsection{表格插入}
+		表格插入仅介绍两种常用的表格样式，一是常用的三线表，二是常用的正常框线的表格。
+			\begin{itemize}
+				\item 三线表 
+				\begin{multicols}{2}
+					\fbox{
+						\begin{minipage}{7cm}
+							$\backslash$begin\{table\}[H]\\{\small \%此处的[H]指令为固定位置(float宏包)}\\
+							\hspace*{2em}$\backslash$centering\\
+							\hspace*{2em}$\backslash$caption\{表名\}\\
+							\hspace*{2em}$\backslash$label\{表名引用ID\}\\
+							\hspace*{2em}$\backslash$setlength\{$\backslash$tabcolsep\}\{10pt\}\\
+							{\small \hspace*{2em}\%列间距调整，默认6pt.}\\
+							\hspace*{2em}$\backslash$begin\{tabular\}\{\fbox{@\{\}}llc\fbox{@\{\}}\}\\
+							{\small \hspace*{2em}\%@\{\}的作用为取消表格左右间距.}\\
+							{\small \hspace*{2em}\%llc表示三列对齐方式LeftLeftCenter}\\
+							{\small \hspace*{2em}\%除了[l],[c]对齐方式外，还有[r]$\to$right.}\\
+							\hspace*{4em}$\backslash$toprule\\
+							\hspace*{6em}xx \& xx \& xx $\backslash\backslash$\\
+							\hspace*{4em}$\backslash$midrule\\
+							\hspace*{6em}xx \& xx \& xx $\backslash\backslash$\\
+							\hspace*{6em}xx \& xx \& xx $\backslash\backslash$\\
+							\hspace*{4em}$\backslash$bottomrule\\
+							\hspace*{2em}$\backslash$end\{tabular\}\\
+							$\backslash$end\{table\}
+						\end{minipage}}
+					\fbox{
+						\begin{minipage}{7cm}
+							\vspace{6.45em}
+							\begin{table}[H]
+								\centering
+								\caption{示例表名}
+								\label{Tab.1}
+								\setlength{\tabcolsep}{10pt}
+								\begin{tabular}{@{}llc@{}}
+									\toprule
+										行1列1 & 行1列2 & 行1列3 \\
+									\midrule
+										行2列1 & 行2列2 & 行2列3 \\
+										行3列1 & 行3列2 & 行3列3 \\
+										行4列1 & 行4列2 & 行4列3 \\
+										行5列1 & 行5列2 & 行5列3 \\
+										行6列1 & 行6列2 & 行6列3 \\
+									\bottomrule
+								\end{tabular}
+							\end{table}
+							\vspace{7.4em}
+						\end{minipage}}
+				\end{multicols}
+				需要注意的是，我们还可以通过在llc之间加入“｜”符号，实现表格竖向线条的添加。这点在全线表中会得到体现。
+				\item 全线表
+				\begin{multicols}{2}
+					\fbox{
+						\begin{minipage}{7cm}
+							$\backslash$begin\{table\}[H]\\{\small \%此处的[H]指令为固定位置(float宏包)}\\
+							\hspace*{2em}$\backslash$centering\\
+							\hspace*{2em}$\backslash$caption\{表名\}\\
+							\hspace*{2em}$\backslash$label\{表名引用ID\}\\
+							\hspace*{2em}$\backslash$setlength\{$\backslash$tabcolsep\}\{10pt\}\\
+							{\small \hspace*{2em}\%列间距调整，默认6pt.}\\
+							\hspace*{2em}$\backslash$begin\{tabular\}\{\fbox{@\{\}}|l|l|c|\fbox{@\{\}}\}\\
+							{\small \hspace*{2em}\%@\{\}的作用为取消表格左右间距.}\\
+							{\small \hspace*{2em}\%llc表示三列对齐方式LeftLeftCenter}\\
+							{\small \hspace*{2em}\%除了[l],[c]对齐方式外，还有[r]$\to$right.}\\
+							\hspace*{4em}$\backslash$hline\\
+							\hspace*{6em}xx \& xx \& xx $\backslash\backslash$\\
+							\hspace*{4em}$\backslash$hline\\
+							\hspace*{6em}xx \& xx \& xx $\backslash\backslash$\\
+							\hspace*{6em}xx \& xx \& xx $\backslash\backslash$\\
+							\hspace*{4em}$\backslash$hline\\
+							\hspace*{2em}$\backslash$end\{tabular\}\\
+							$\backslash$end\{table\}
+					\end{minipage}}
+					\fbox{
+						\begin{minipage}{7cm}
+							\vspace{6.45em}
+							\begin{table}[H]
+								\centering
+								\caption{示例表名}
+								\label{Tab.2}
+								\setlength{\tabcolsep}{10pt}
+								\begin{tabular}{@{}|l|l|c|@{}}
+									\hline
+									行1列1 & 行1列2 & 行1列3 \\
+									\hline
+									行2列1 & 行2列2 & 行2列3 \\
+									行3列1 & 行3列2 & 行3列3 \\
+									行4列1 & 行4列2 & 行4列3 \\
+									行5列1 & 行5列2 & 行5列3 \\
+									行6列1 & 行6列2 & 行6列3 \\
+									\hline
+								\end{tabular}
+							\end{table}
+							\vspace{8.4em}
+					\end{minipage}}
+				\end{multicols}
+			\end{itemize}
+		\subsection{文本框插入}
+			\subsubsection{基于$\backslash$fbox简单文本框}
+			\begin{itemize}
+				\item 单行文本框\\
+				\fbox{
+					\begin{minipage}{14.6cm}
+						$\backslash$fbox\{单行内容\}
+					\end{minipage}}\\
+				注意，这种语法仅能为单行，且仅能根据键入字符数目来创建对应长度的方框。\\
+				且在文本过长时无法换行，文本将溢出文本框。
+				\item 多行文本框\\
+				\fbox{
+					\begin{minipage}{14.6cm}
+						$\backslash$fbox\{\\
+						\hspace*{2em}$\backslash$begin\{minipage\}\{\textbf{\textit{框宽}}\}\\
+						\hspace*{4em}正文内容，可使用$\backslash$语法换行\\
+						\hspace*{2em}$\backslash$end\{minipage\}\\
+						\hspace*{2em}\%需要新建一个minipage(分页)来实现此功能。\\
+						\}
+					\end{minipage}}
+			\end{itemize}
+			\subsubsection{基于$\backslash$tcolorbox复杂文本框}
+			这种插入方法需要通过$\backslash$语法进行换行。相关语法如下所示。
+				\begin{multicols}{2}
+					\fbox{
+					\begin{minipage}{5cm}
+						\vspace*{0.2em}
+						标题\ xxx(\textbf{\textit{colframe}})\\
+						\textbf{-----------------------------------}\\
+						正文\ x\ x\ x\ x\ x\ x\ x\ x\ x\ x\ x\ x\ x\\
+						x\ x\ x\ x\ x\ x\ x\ x\ x\ x\ x\ x(\textbf{\textit{colback}})
+						\vspace{0.1em}
+					\end{minipage}}
+					\fbox{
+					\begin{minipage}{9cm}
+						$\backslash$begin\{tcolorbox\}[colback=yellow!10,colframe=blue!50,\\
+						title=标题]\\
+						\hspace*{2em}正文部分$\backslash\backslash$\ \%!后数字用来调节颜色透明度\\
+						\hspace*{2em}正文第二行\\
+						$\backslash$end\{tcolorbox\}
+					\end{minipage}}
+				\end{multicols}
+		\subsection{引用插入}
+			\subsubsection{正文引用}
+			\begin{itemize}
+				\item 在正文中想要插入引用角标的地方加入$\backslash$lable\{引用ID\}
+				\item 然后在对应地方插入$\backslash$ref\{引用ID\}
+			\end{itemize}
+			\subsubsection{文献引用}
+			\begin{itemize}
+				\item 在.tex文件所在文件夹创建一.bib文件，内需放置BiBTex内容
+				\item 在所需要正文引用的位置插入$\backslash$cite\{引用ID\}
+				\item 文章末尾引用文献，键入以下文本：
+			\begin{center}
+					\fbox{
+				\begin{minipage}{14cm}
+					$\backslash$bibliographystyle\{nnsrt\}\\
+					$\backslash$bibliography\{\textbf{\textit{\underline{xxx(所创建的.bib文件名)}}}\}
+				\end{minipage}}
+			\end{center}
+			\end{itemize}
+\end{document}

@@ -1,0 +1,21 @@
+\contentsline {section}{\numberline {1}Python环境配置}{2}{}%
+\contentsline {subsection}{\numberline {1.1}Windows系统情况下的相关配置}{2}{}%
+\contentsline {subsection}{\numberline {1.2}Mac系统情况下的相关配置}{3}{}%
+\contentsline {section}{\numberline {2}\LaTeX 使用基础命令}{4}{}%
+\contentsline {subsection}{\numberline {2.1}代码基本结构}{4}{}%
+\contentsline {subsection}{\numberline {2.2}单双栏版式变换}{5}{}%
+\contentsline {subsection}{\numberline {2.3}公式插入}{5}{}%
+\contentsline {subsubsection}{\numberline {2.3.1}普通公式}{6}{}%
+\contentsline {subsubsection}{\numberline {2.3.2}矩阵}{8}{}%
+\contentsline {subsubsection}{\numberline {2.3.3}转义符号}{9}{}%
+\contentsline {subsection}{\numberline {2.4}枚举}{10}{}%
+\contentsline {subsection}{\numberline {2.5}图片插入}{10}{}%
+\contentsline {subsubsection}{\numberline {2.5.1}单图插入}{10}{}%
+\contentsline {subsubsection}{\numberline {2.5.2}多图插入}{10}{}%
+\contentsline {subsection}{\numberline {2.6}表格插入}{11}{}%
+\contentsline {subsection}{\numberline {2.7}文本框插入}{12}{}%
+\contentsline {subsubsection}{\numberline {2.7.1}基于$\backslash $fbox简单文本框}{12}{}%
+\contentsline {subsubsection}{\numberline {2.7.2}基于$\backslash $tcolorbox复杂文本框}{12}{}%
+\contentsline {subsection}{\numberline {2.8}引用插入}{13}{}%
+\contentsline {subsubsection}{\numberline {2.8.1}正文引用}{13}{}%
+\contentsline {subsubsection}{\numberline {2.8.2}文献引用}{13}{}%
