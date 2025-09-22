@@ -1,0 +1,1133 @@
+\documentclass[11pt]{article}
+
+\usepackage[breakable]{tcolorbox}
+\usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+\usepackage{ctex}
+\usepackage[table]{xcolor}
+
+% Basic figure setup, for now with no caption control since it's done
+% automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+\usepackage{graphicx}
+% Keep aspect ratio if custom image width or height is specified
+\setkeys{Gin}{keepaspectratio}
+% Maintain compatibility with old templates. Remove in nbconvert 6.0
+\let\Oldincludegraphics\includegraphics
+% Ensure that by default, figures have no caption (until we provide a
+% proper Figure object with a Caption API and a way to capture that
+% in the conversion process - todo).
+\usepackage{caption}
+\DeclareCaptionFormat{nocaption}{}
+\captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+\usepackage[table]{xcolor}
+\usepackage{booktabs}
+
+\usepackage{float}
+\floatplacement{figure}{H} % forces figures to be placed at the correct location
+\usepackage{xcolor} % Allow colors to be defined
+\usepackage{enumerate} % Needed for markdown enumerations to work
+\usepackage{geometry} % Used to adjust the document margins
+\usepackage{amsmath} % Equations
+\usepackage{amssymb} % Equations
+\usepackage{textcomp} % defines textquotesingle
+% Hack from http://tex.stackexchange.com/a/47451/13684:
+\AtBeginDocument{%
+	\def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+}
+\usepackage{upquote} % Upright quotes for verbatim code
+\usepackage{eurosym} % defines \euro
+
+\usepackage{iftex}
+\ifPDFTeX
+\usepackage[T1]{fontenc}
+\IfFileExists{alphabeta.sty}{
+	\usepackage{alphabeta}
+}{
+	\usepackage[mathletters]{ucs}
+	\usepackage[utf8x]{inputenc}
+}
+\else
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\fi
+
+\usepackage{fancyvrb} % verbatim replacement that allows latex
+\usepackage{grffile} % extends the file name processing of package graphics
+% to support a larger range
+\makeatletter % fix for old versions of grffile with XeLaTeX
+\@ifpackagelater{grffile}{2019/11/01}
+{
+	% Do nothing on new versions
+}
+{
+	\def\Gread@@xetex#1{%
+		\IfFileExists{"\Gin@base".bb}%
+		{\Gread@eps{\Gin@base.bb}}%
+		{\Gread@@xetex@aux#1}%
+	}
+}
+\makeatother
+\usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+\adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+% The hyperref package gives us a pdf with properly built
+% internal navigation ('pdf bookmarks' for the table of contents,
+% internal cross-reference links, web links for URLs, etc.)
+\usepackage{hyperref}
+% The default LaTeX title has an obnoxious amount of whitespace. By default,
+% titling removes some of it. It also provides customization options.
+\usepackage{titling}
+\usepackage{longtable} % longtable support required by pandoc >1.10
+\usepackage{booktabs}  % table support for pandoc > 1.12.2
+\usepackage{array}     % table support for pandoc >= 2.11.3
+\usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+\usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+\usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+% normalem makes italics be italics, not underlines
+\usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+\usepackage{mathrsfs}
+
+
+\usepackage{geometry}
+\usepackage{float}
+\usepackage{multicol}
+\usepackage{subfigure}
+\usepackage{makecell}
+
+% Colors for the hyperref package
+\definecolor{urlcolor}{rgb}{0,.145,.698}
+\definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+\definecolor{citecolor}{rgb}{.12,.54,.11}
+
+% ANSI colors
+\definecolor{ansi-black}{HTML}{3E424D}
+\definecolor{ansi-black-intense}{HTML}{282C36}
+\definecolor{ansi-red}{HTML}{E75C58}
+\definecolor{ansi-red-intense}{HTML}{B22B31}
+\definecolor{ansi-green}{HTML}{00A250}
+\definecolor{ansi-green-intense}{HTML}{007427}
+\definecolor{ansi-yellow}{HTML}{DDB62B}
+\definecolor{ansi-yellow-intense}{HTML}{B27D12}
+\definecolor{ansi-blue}{HTML}{208FFB}
+\definecolor{ansi-blue-intense}{HTML}{0065CA}
+\definecolor{ansi-magenta}{HTML}{D160C4}
+\definecolor{ansi-magenta-intense}{HTML}{A03196}
+\definecolor{ansi-cyan}{HTML}{60C6C8}
+\definecolor{ansi-cyan-intense}{HTML}{258F8F}
+\definecolor{ansi-white}{HTML}{C5C1B4}
+\definecolor{ansi-white-intense}{HTML}{A1A6B2}
+\definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+\definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+% common color for the border for error outputs.
+\definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+% commands and environments needed by pandoc snippets
+% extracted from the output of `pandoc -s`
+\providecommand{\tightlist}{%
+	\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+\newcommand{\RegionMarkerTok}[1]{{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+\newcommand{\NormalTok}[1]{{#1}}
+
+% Additional commands for more recent versions of Pandoc
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+\newcommand{\ImportTok}[1]{{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+\newcommand{\BuiltInTok}[1]{{#1}}
+\newcommand{\ExtensionTok}[1]{{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{%
+	\sbox\pandoc@box{#1}%
+	% scaling factors for width and height
+	\Gscale@div\@tempa\textheight{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+	\Gscale@div\@tempb\linewidth{\wd\pandoc@box}%
+	% select the smaller of both
+	\ifdim\@tempb\p@<\@tempa\p@
+	\let\@tempa\@tempb
+	\fi
+	% scaling accordingly (\@tempa < 1)
+	\ifdim\@tempa\p@<\p@
+	\scalebox{\@tempa}{\usebox\pandoc@box}%
+	% scaling not needed, use as it is
+	\else
+	\usebox{\pandoc@box}%
+	\fi
+}
+\makeatother
+
+% Define a nice break command that doesn't care if a line doesn't already
+% exist.
+\def\br{\hspace*{\fill} \\* }
+% Math Jax compatibility definitions
+\def\gt{>}
+\def\lt{<}
+\let\Oldtex\TeX
+\let\Oldlatex\LaTeX
+\renewcommand{\TeX}{\textrm{\Oldtex}}
+\renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+% Document parameters
+% Document title
+\title{机器视觉-实践作业-2}
+\vspace{2em}\author{国嘉通\thanks{Tel.+86-166 8130 6085,\ E-mail:guojiatom2006@outlook.com}} 
+
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+	\let\PY@ul=\relax \let\PY@tc=\relax%
+	\let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+	\PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+				\PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+% For linebreaks inside Verbatim environment from package fancyvrb.
+\makeatletter
+\newbox\Wrappedcontinuationbox
+\newbox\Wrappedvisiblespacebox
+\newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+\newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+\newcommand*\Wrappedcontinuationindent {3ex }
+\newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+% Take advantage of the already applied Pygments mark-up to insert
+% potential linebreaks for TeX processing.
+%        {, <, #, %, $, ' and ": go to next line.
+	%        _, }, ^, &, >, - and ~: stay at end of broken line.
+% Use of \textquotesingle for straight quote.
+\newcommand*\Wrappedbreaksatspecials {%
+	\def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+	\def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+	\def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+	\def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+	\def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+	\def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+	\def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+	\def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+	\def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+	\def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+	\def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+	\def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+	\def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+	\def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+}
+% Some characters . , ; ? ! / are not pygmentized.
+% This macro makes them "active" and they will insert potential linebreaks
+\newcommand*\Wrappedbreaksatpunct {%
+	\lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+	\lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+	\lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+	\lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+	\lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+	\lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+	\lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+	\catcode`\.\active
+	\catcode`\,\active
+	\catcode`\;\active
+	\catcode`\:\active
+	\catcode`\?\active
+	\catcode`\!\active
+	\catcode`\/\active
+	\lccode`\~`\~
+}
+\makeatother
+
+\let\OriginalVerbatim=\Verbatim
+\makeatletter
+\renewcommand{\Verbatim}[1][1]{%
+	%\parskip\z@skip
+	\sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+	\sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+	\def\FancyVerbFormatLine ##1{\hsize\linewidth
+		\vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+			\doublehyphendemerits\z@\finalhyphendemerits\z@
+			\strut ##1\strut}%
+	}%
+	% If the linebreak is at a space, the latter will be displayed as visible
+	% space at end of first line, and a continuation symbol starts next line.
+	% Stretch/shrink are however usually zero for typewriter font.
+	\def\FV@Space {%
+		\nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+		\discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+		{\kern\fontdimen2\font}%
+	}%
+	
+	% Allow breaks at special characters using \PYG... macros.
+	\Wrappedbreaksatspecials
+	% Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+	\OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+}
+\makeatother
+
+% Exact colors from NB
+\definecolor{incolor}{HTML}{303F9F}
+\definecolor{outcolor}{HTML}{D84315}
+\definecolor{cellborder}{HTML}{CFCFCF}
+\definecolor{cellbackground}{HTML}{F7F7F7}
+
+% prompt
+\makeatletter
+\newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+\makeatother
+\newcommand{\prompt}[4]{
+	{\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+}
+
+
+
+% Prevent overflowing lines due to hard-to-break entities
+\sloppy
+% Setup hyperref package
+\hypersetup{
+	breaklinks=true,  % so long urls are correctly broken across lines
+	colorlinks=true,
+	urlcolor=urlcolor,
+	linkcolor=linkcolor,
+	citecolor=citecolor,
+}
+% Slightly bigger margins than the latex defaults
+
+\geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    \vspace*{4em}
+    \begin{abstract}
+    	机器视觉第二次实验课程主要包含三大部分的练习，一是灰度变换基础，二是空域平滑滤波，三是空域锐化滤波。对于灰度变换基础部分，首先讲解如何使用OpenCV读取图像并显示其灰度直方图；在此基础上，还会讲解如何实现幂律（伽马）变换，并通过尝试不同的伽马值观察其对整体亮度与对比度的调控作用；进一步地，对灰度直方图进行均衡化并应用于低对比图像。对于空域平滑滤波部分，主要陈述了如何对图像进行加噪，并实现均值滤波、高斯滤波、中值滤波，讨论其对抑制高斯噪声和椒盐噪声方面的效果差异。对于空域锐化滤波部分，主要讲解如何进行拉普拉斯算子锐化操作，并实现高提升滤波，讨论锐化与噪声之间的平衡关系。希望本篇文章是一篇内容翔实、方便随时翻阅复习学习OpenCV的学习笔记。
+    \end{abstract}
+    
+    \begin{center}
+    	\vspace*{5em}{\large \textbf{Now the CODE is available at:}}\\\underline{https://github.com/GplasT0810/Machine-Vision-Experiment.git}\\
+    	\vspace*{6em}{\Large \textbf{长沙理工大学}}\\
+    	\vspace{0.7em}{\large \textbf{卓越工程师学院\ 绿色智慧交通 2401班}}\\
+    	\vspace{0.7em}\textbf{{\large 202404080608}}\\
+    	\vspace{0.7em}{\large \textbf{国嘉通}}
+    \end{center}
+    \newpage
+    
+    \tableofcontents
+	    \begin{center}
+		\vspace{9em}\adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{SchPic.png}
+	\end{center}
+	
+	\vspace*{10em}--------------------------------------------\\
+	Complated Time: Sep.$22^{th}$.2025\\ \\
+	Guo Jiatong , Green \& Intelligent Transportation 2401\\
+	Elite Engineering School , Changsha University of Science \& Technology.\\
+	Changsha 410114 , Hunan , China
+	
+	\newpage
+    
+    \section{灰度变换基础}
+    本章共有三个部分，它们分别为：
+    \begin{itemize}
+    	\item 直方图显示\\
+    	使用OpenCV读取一张典型的低对比度图像（如背光人像、X光片、雾天场景）和一张正常对比度图像，显示原始图像及其灰度直方图。
+    	\item 幂律（伽马）变换\\
+    	幂律（伽马）变换是一种简单而强大的灰度非线性映射，公式如下：
+    		$$s = c \times r ^ γ$$
+    	其中，r为输入的已归一化后的像素值；$\gamma$为核心参数，其值越小输出图像越亮，反之越暗；c为常数，通常取为1；s为输出的像素值。\\
+    	固定 c=1，尝试不同的 $\gamma$ 值，观察其对整体亮度和对比度的调控作用。
+    	\item 灰度直方图均衡化\\
+    	实现直方图均衡化，应用于低对比度图像，观察图像视觉效果和直方图形态的变化。
+    \end{itemize}
+    
+    \subsection{直方图显示}
+    欲想要显示图像的直方图，要先将图像转换为单通道灰度图像。所有像素值均落在0-255之间。依旧采用cvtColor函数将BGR转换为GRAY。\\
+    然后，可以调用cv2库中的\textbf{calcHist}([image\_name],[channels],mask,HistSize,PixelRanges)来计算灰度直方图。值得注意的是，此函数返回的并不是直接的图像，而是一维数组。这意味着我们不能直接使用imshow来显示它，而应该用plot函数来显示它。
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+%\prompt{In}{incolor}{463}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}直方图显示}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{cv2}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+
+\PY{c+c1}{\PYZsh{}读取照片}
+\PY{n}{lh\PYZus{}img\PYZus{}path} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/Machine Vision Experiment 2/lh.png}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{low\PYZus{}contrast\PYZus{}background\PYZus{}img\PYZus{}path} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/Machine Vision Experiment 2/low\PYZus{}contrast\PYZus{}background.jpg}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img\PYZus{}lh} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{lh\PYZus{}img\PYZus{}path}\PY{p}{)}
+\PY{n}{img\PYZus{}low\PYZus{}contrast\PYZus{}background} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{low\PYZus{}contrast\PYZus{}background\PYZus{}img\PYZus{}path}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}转换为灰度图像}
+\PY{n}{img\PYZus{}lh\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}lh}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2GRAY}\PY{p}{)}
+\PY{n}{img\PYZus{}low\PYZus{}contrast\PYZus{}background\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}low\PYZus{}contrast\PYZus{}background}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2GRAY}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}计算并显示两个直方图的对比}
+\PY{c+c1}{\PYZsh{}计算图像灰度直方图的函数cv2.calcHist(images, channels, mask, histSize, pixel\PYZus{}ranges).返回的是一维数组, 不能用imshow(二维图像数组)}
+\PY{n}{hist\PYZus{}img\PYZus{}lh\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{calcHist}\PY{p}{(}\PY{p}{[}\PY{n}{img\PYZus{}lh\PYZus{}gray}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{256}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{256}\PY{p}{]}\PY{p}{)}
+\PY{n}{hist\PYZus{}img\PYZus{}low\PYZus{}contrast\PYZus{}background\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{calcHist}\PY{p}{(}\PY{p}{[}\PY{n}{img\PYZus{}low\PYZus{}contrast\PYZus{}background\PYZus{}gray}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{256}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{256}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{img\PYZus{}low\PYZus{}contrast\PYZus{}background} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}low\PYZus{}contrast\PYZus{}background}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+\PY{n}{img\PYZus{}lh} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}lh}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}显示图像}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}low\PYZus{}contrast\PYZus{}background}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Low Contrast Background}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}low\PYZus{}contrast\PYZus{}background\PYZus{}gray}\PY{p}{,} \PY{n}{cmap} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Low Contrast Background Gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{hist\PYZus{}img\PYZus{}low\PYZus{}contrast\PYZus{}background\PYZus{}gray}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Low Contrast Background}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Grayscale Value}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Frequency}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Grayscale Histogram(Low Contrast)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}lh}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{LH Original Image}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}lh\PYZus{}gray}\PY{p}{,} \PY{n}{cmap} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{LH Gray Image}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{hist\PYZus{}img\PYZus{}lh\PYZus{}gray}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{LH}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Grayscale Value}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Frequency}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Grayscale Histogram(LH)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+%\prompt{Out}{outcolor}{463}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<matplotlib.legend.Legend at 0x373ce3790>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_0_1.png}
+    \end{center}
+   % { \hspace*{\fill} \\}
+    
+    \subsection{幂律(伽马)变换} 
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+%\prompt{In}{incolor}{464}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}幂律（伽马）变换}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{cv2}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}
+
+\PY{n}{low\PYZus{}contrast\PYZus{}background\PYZus{}img\PYZus{}path} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/Machine Vision Experiment 2/low\PYZus{}contrast\PYZus{}background.jpg}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img\PYZus{}low\PYZus{}contrast\PYZus{}background} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{low\PYZus{}contrast\PYZus{}background\PYZus{}img\PYZus{}path}\PY{p}{)}
+\PY{n}{img\PYZus{}low\PYZus{}contrast\PYZus{}background\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}low\PYZus{}contrast\PYZus{}background}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2GRAY}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}参数设置}
+\PY{n}{gamma\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{l+m+mf}{0.4}\PY{p}{,} \PY{l+m+mf}{0.7}\PY{p}{,} \PY{l+m+mf}{1.0}\PY{p}{,} \PY{l+m+mf}{1.5}\PY{p}{,} \PY{l+m+mf}{2.2}\PY{p}{]}
+\PY{n}{c} \PY{o}{=} \PY{l+m+mf}{1.0}
+\PY{n}{n\PYZus{}cols} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{gamma\PYZus{}list}\PY{p}{)} \PY{c+c1}{\PYZsh{}gamma列表列数}
+\PY{c+c1}{\PYZsh{}归一化到 [0,1] 再做幂律变换}
+\PY{n}{img\PYZus{}one} \PY{o}{=} \PY{n}{img\PYZus{}low\PYZus{}contrast\PYZus{}background\PYZus{}gray}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{float32}\PY{p}{)}\PY{o}{/}\PY{l+m+mf}{255.0} \PY{c+c1}{\PYZsh{}uint8\PYZhy{}\PYZhy{}\PYZgt{}float255}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{n\PYZus{}cols}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{4}\PY{o}{*}\PY{n}{n\PYZus{}cols}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}进行幂律变换}
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{gamma\PYZus{}list}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{}i接收下标，j接收对应列表值}
+    \PY{n}{s} \PY{o}{=} \PY{n}{c} \PY{o}{*} \PY{n}{img\PYZus{}one} \PY{o}{*}\PY{o}{*} \PY{n}{j}
+    \PY{n}{s\PYZus{}uint8} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{clip}\PY{p}{(}\PY{n}{s} \PY{o}{*} \PY{l+m+mi}{255}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{255}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)} \PY{c+c1}{\PYZsh{}使用clip做截断后转换uint8}
+    \PY{c+c1}{\PYZsh{}直方图}
+    \PY{n}{hist} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{calcHist}\PY{p}{(}\PY{p}{[}\PY{n}{s\PYZus{}uint8}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{256}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{256}\PY{p}{]}\PY{p}{)}
+    
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{s\PYZus{}uint8}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gamma = }\PY{l+s+si}{\PYZob{}}\PY{n}{j}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{hist}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{ticklabel\PYZus{}format}\PY{p}{(}\PY{n}{style}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{scientific}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{scilimits}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{}使用科学计数法}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pixel Value}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Frequency}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Grayscale Histogram(gamma=}\PY{l+s+si}{\PYZob{}}\PY{n}{j}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+根据观察不同$\gamma$值情况下的幂律变换，不难发现以下规律：
+\begin{itemize}
+	\item $\gamma$<1时\\
+	直方图右移，暗区被拉开 → 图像变亮，暗细节可见。
+	\item $\gamma$>1时\\
+	直方图左移，亮区被压缩 → 图像变暗，高光细节显现。
+	\item $\gamma$=1时\\
+	线性映射，原图不变。
+\end{itemize}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_1_0.png}
+    \end{center}
+   % { \hspace*{\fill} \\}
+    
+\subsection{灰度直方图均衡化}
+介绍直方图均衡化指令\textbf{equalizeHist}(Image Name)。关于此函数有两点使用上的注意：
+\begin{itemize}
+	\item 此为灰度直方图均衡化指令，作用对象必须为单通道的灰度图像。也就是说，必须在使用前对图像进行cvtColor转换。
+	\item 此函数的输出为图像，可以使用imshow显示而非plot指令。
+\end{itemize}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+%\prompt{In}{incolor}{465}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}灰度直方图均衡化}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{cv2}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+
+\PY{c+c1}{\PYZsh{}读取照片}
+\PY{n}{low\PYZus{}contrast\PYZus{}background\PYZus{}img\PYZus{}path} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/Machine Vision Experiment 2/low\PYZus{}contrast\PYZus{}background.jpg}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img\PYZus{}low\PYZus{}contrast\PYZus{}background} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{low\PYZus{}contrast\PYZus{}background\PYZus{}img\PYZus{}path}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}转换为灰度图像}
+\PY{n}{img\PYZus{}low\PYZus{}contrast\PYZus{}background\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}low\PYZus{}contrast\PYZus{}background}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2GRAY}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}计算原灰度图像的直方图}
+\PY{n}{hist\PYZus{}img\PYZus{}low\PYZus{}contrast\PYZus{}background\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{calcHist}\PY{p}{(}\PY{p}{[}\PY{n}{img\PYZus{}low\PYZus{}contrast\PYZus{}background\PYZus{}gray}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{256}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{256}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}直方图均衡化指令}
+\PY{n}{equalized\PYZus{}img\PYZus{}low\PYZus{}contrast\PYZus{}background\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{equalizeHist}\PY{p}{(}\PY{n}{img\PYZus{}low\PYZus{}contrast\PYZus{}background\PYZus{}gray}\PY{p}{)} \PY{c+c1}{\PYZsh{}输出为图像}
+\PY{c+c1}{\PYZsh{}均衡化后直方图计算}
+\PY{n}{hist\PYZus{}equalized\PYZus{}img\PYZus{}low\PYZus{}contrast\PYZus{}background\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{calcHist}\PY{p}{(}\PY{p}{[}\PY{n}{equalized\PYZus{}img\PYZus{}low\PYZus{}contrast\PYZus{}background\PYZus{}gray}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{256}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{256}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{}输出为数组}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}low\PYZus{}contrast\PYZus{}background\PYZus{}gray}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Low Contrast Image Gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{equalized\PYZus{}img\PYZus{}low\PYZus{}contrast\PYZus{}background\PYZus{}gray}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Equalized Image}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{hist\PYZus{}img\PYZus{}low\PYZus{}contrast\PYZus{}background\PYZus{}gray}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Original}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.75}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{hist\PYZus{}equalized\PYZus{}img\PYZus{}low\PYZus{}contrast\PYZus{}background\PYZus{}gray}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Equalized}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.55}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Grayscale Histogram Comparation}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Grayscale Value}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Frequency}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+%\prompt{Out}{outcolor}{465}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<matplotlib.legend.Legend at 0x3738aa990>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_2_1.png}
+    \end{center}
+  %  { \hspace*{\fill} \\}
+    观察均衡化前后的图像可以发现，对比十分明显，原图对比度相对比较弱，有“涂抹”感，层次弱且画面发灰，呈现效果差。对应的灰度直方图跨度较窄，不够均衡，有强烈的波峰、波谷对比。\\
+    而均衡化后的图像对比度增强，暗部细节与亮部细节对比明显，更加通透。灰度直方图表现的更为均衡，被“拉平”铺满整个0-255区域，不存在某一灰度值下无像素的情况。\\
+    可以见得灰度直方图的效果在“\underline{把像素数平均分配到整个灰度范围}”。
+    
+    \section{空域平滑滤波}
+   本章主要讲解两大部分，分别为图像的加噪处理与图像的滤波处理。\\
+   其中图像的加噪处理中，分为高斯噪声与椒盐噪声；图像滤波处理分为均值滤波、高斯滤波、中值滤波三种基本滤波器。在最后，我们还讨论了滤波器大小与其参数的选择策略。
+    \subsection{图像加噪}
+    在本节中，实现了对一张清晰图像人工添加不同类型的噪声：高斯噪声（尝试不同方差）、椒盐噪声（尝试不同噪声密度），并以直观的参数选择显著地展示了其不同之处，得出总结规律。
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+%\prompt{In}{incolor}{466}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}图像加噪}
+\PY{c+c1}{\PYZsh{}高斯噪声\PYZhy{}\PYZhy{}\PYZgt{}调节方差，椒盐噪声\PYZhy{}\PYZhy{}\PYZgt{}调节密度}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{cv2}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{n}{img\PYZus{}path\PYZus{}lh} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/Machine Vision Experiment 2/lh.png}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img\PYZus{}lh} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}path\PYZus{}lh}\PY{p}{)}
+
+\PY{n}{gauss\PYZus{}var\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{l+m+mf}{0.04}\PY{p}{,} \PY{l+m+mf}{0.08}\PY{p}{,} \PY{l+m+mf}{0.12}\PY{p}{]} \PY{c+c1}{\PYZsh{}高斯噪声方差}
+\PY{n}{salt\PYZus{}pepper\PYZus{}density\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{l+m+mf}{0.05}\PY{p}{,} \PY{l+m+mf}{0.10}\PY{p}{,} \PY{l+m+mf}{0.15}\PY{p}{]} \PY{c+c1}{\PYZsh{}椒盐噪声密度}
+\PY{n}{Height}\PY{p}{,} \PY{n}{Width}\PY{p}{,} \PY{n}{Channels} \PY{o}{=} \PY{n}{img\PYZus{}lh}\PY{o}{.}\PY{n}{shape}
+\PY{c+c1}{\PYZsh{}高斯加噪函数}
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{add\PYZus{}gauss\PYZus{}noise}\PY{p}{(}\PY{n}{img}\PY{p}{,} \PY{n}{var}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{}img=图像，var=方差}
+    \PY{n}{sigma} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{var}\PY{p}{)}
+    \PY{n}{gauss} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{normal}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{sigma}\PY{p}{,} \PY{n}{img}\PY{o}{.}\PY{n}{shape}\PY{p}{)} \PY{c+c1}{\PYZsh{}均值默认为0}
+    \PY{n}{noisy} \PY{o}{=} \PY{n}{img} \PY{o}{+} \PY{n}{gauss}
+    \PY{k}{return} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{clip}\PY{p}{(}\PY{n}{noisy}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{255}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}椒盐加噪函数}
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{add\PYZus{}salt\PYZus{}pepper\PYZus{}noise}\PY{p}{(}\PY{n}{img}\PY{p}{,} \PY{n}{density}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{}density=椒盐点占像素点总比例}
+    \PY{n}{noisy} \PY{o}{=} \PY{n}{img}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)} \PY{c+c1}{\PYZsh{}在复制图上进行调整}
+    \PY{c+c1}{\PYZsh{}随机数椒盐掩膜}
+    \PY{n}{mask} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n}{Height}\PY{p}{,} \PY{n}{Width}\PY{p}{)} \PY{c+c1}{\PYZsh{}生成 0–1 之间的随机矩阵}
+    \PY{n}{salt} \PY{o}{=} \PY{n}{mask} \PY{o}{\PYZlt{}} \PY{n}{density} \PY{o}{/} \PY{l+m+mi}{2} \PY{c+c1}{\PYZsh{}白点}
+    \PY{n}{pepper} \PY{o}{=} \PY{n}{mask} \PY{o}{\PYZgt{}} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{density} \PY{o}{/} \PY{l+m+mi}{2} \PY{c+c1}{\PYZsh{}黑点}
+    \PY{n}{noisy}\PY{p}{[}\PY{n}{salt}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1}
+    \PY{n}{noisy}\PY{p}{[}\PY{n}{pepper}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{k}{return} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{clip}\PY{p}{(}\PY{n}{noisy}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{255}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}对原图像加噪前要将灰度图像归一化}
+\PY{n}{img\PYZus{}one} \PY{o}{=} \PY{n}{img\PYZus{}lh}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{float32}\PY{p}{)}\PY{o}{/}\PY{l+m+mf}{255.0}
+\PY{c+c1}{\PYZsh{}找出最大列数 方便进行图像绘制}
+\PY{n}{n\PYZus{}gauss} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{gauss\PYZus{}var\PYZus{}list}\PY{p}{)}
+\PY{n}{n\PYZus{}salt\PYZus{}pepper} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{salt\PYZus{}pepper\PYZus{}density\PYZus{}list}\PY{p}{)}
+\PY{n}{cols} \PY{o}{=} \PY{n+nb}{max}\PY{p}{(}\PY{n}{n\PYZus{}gauss}\PY{p}{,} \PY{n}{n\PYZus{}salt\PYZus{}pepper}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,} \PY{n}{cols}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{6}\PY{o}{*}\PY{n}{cols}\PY{p}{,} \PY{l+m+mi}{20}\PY{p}{)}\PY{p}{)}
+\PY{n}{img\PYZus{}one} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}one}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}高斯噪声图像}
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{var} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{gauss\PYZus{}var\PYZus{}list}\PY{p}{)}\PY{p}{:}
+    \PY{n}{noisy} \PY{o}{=} \PY{n}{add\PYZus{}gauss\PYZus{}noise}\PY{p}{(}\PY{n}{img\PYZus{}one}\PY{p}{,} \PY{n}{var}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{noisy}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Gauss σ²=}\PY{l+s+si}{\PYZob{}}\PY{n}{var}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}高斯噪声直方图（灰度)}
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{var} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{gauss\PYZus{}var\PYZus{}list}\PY{p}{)}\PY{p}{:}
+    \PY{n}{noisy\PYZus{}rgb} \PY{o}{=} \PY{n}{add\PYZus{}gauss\PYZus{}noise}\PY{p}{(}\PY{n}{img\PYZus{}one}\PY{p}{,} \PY{n}{var}\PY{p}{)}
+    \PY{n}{noisy\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{p}{(}\PY{n}{noisy\PYZus{}rgb}\PY{o}{*}\PY{l+m+mi}{255}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}RGB2GRAY}\PY{p}{)}
+    \PY{n}{hist} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{calcHist}\PY{p}{(}\PY{p}{[}\PY{n}{noisy\PYZus{}gray}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{256}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{256}\PY{p}{]}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{hist}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{ticklabel\PYZus{}format}\PY{p}{(}\PY{n}{style}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{scientific}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{scilimits}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{}使用科学计数法}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pixel Value}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Frequency}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Hist Gauss σ²=}\PY{l+s+si}{\PYZob{}}\PY{n}{var}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlim}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{256}\PY{p}{]}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}椒盐噪声图像}
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{density} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{salt\PYZus{}pepper\PYZus{}density\PYZus{}list}\PY{p}{)}\PY{p}{:}
+    \PY{n}{noisy} \PY{o}{=} \PY{n}{add\PYZus{}salt\PYZus{}pepper\PYZus{}noise}\PY{p}{(}\PY{n}{img\PYZus{}one}\PY{p}{,} \PY{n}{density}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{noisy}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Salt Pepper Noisy d=}\PY{l+s+si}{\PYZob{}}\PY{n}{density}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}椒盐噪声直方图}
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{density} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{salt\PYZus{}pepper\PYZus{}density\PYZus{}list}\PY{p}{)}\PY{p}{:}
+    \PY{n}{noisy\PYZus{}rgb} \PY{o}{=} \PY{n}{add\PYZus{}salt\PYZus{}pepper\PYZus{}noise}\PY{p}{(}\PY{n}{img\PYZus{}one}\PY{p}{,} \PY{n}{density}\PY{p}{)}
+    \PY{n}{noisy\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{noisy\PYZus{}rgb}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}RGB2GRAY}\PY{p}{)}
+    \PY{n}{hist} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{calcHist}\PY{p}{(}\PY{p}{[}\PY{n}{noisy\PYZus{}gray}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{256}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{256}\PY{p}{]}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{hist}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{ticklabel\PYZus{}format}\PY{p}{(}\PY{n}{style}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{scientific}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{scilimits}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pixel Value}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Frequency}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Hist Salt Pepper d=}\PY{l+s+si}{\PYZob{}}\PY{n}{density}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+\begin{table}[H]
+	\centering
+	\small
+	%\renewcommand\arraystretch{1.3}
+	\begin{tabular}{@{}c@{}c@{}c@{}}
+		\toprule
+		\makecell[c]{强度等级} & \makecell[c]{高斯噪声图像 \& 直方图} & \makecell[c]{椒盐噪声图像 \& 直方图} \\
+		\midrule
+		\makecell[c]{低} &
+		\makecell[c]{图像：轻微颗粒，整体灰度仍在原范围\\直方图：整体形状基本保持，两侧出现低幅“拖尾”} &
+		\makecell[c]{图像：零星黑白点\\直方图：在 0 和 255 处出现两个小尖峰} \\
+		\addlinespace
+		\makecell[c]{中} &
+		\makecell[c]{图像：颗粒感明显，边缘被“毛刺”包围\\直方图：整体变胖（方差增大），两侧拖尾加高} &
+		\makecell[c]{图像：黑白点增多，像“雪花”\\直方图：0/255 两峰显著增高，中间区域轻微下降} \\
+		\addlinespace
+		\makecell[c]{高} &
+		\makecell[c]{图像：出现“雾状”纹理，细节被掩盖\\直方图：整体展宽，近似高斯鼓包，原峰值上升} &
+		\makecell[c]{图像：大片盐粒与胡椒点，视觉阻塞\\直方图：两端尖峰极高，中间灰度被“挖空”} \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\begin{itemize}
+	\item 图像特性差异
+	\begin{enumerate}
+		\item 高斯噪声直接的作用效果为连续的随机偏差，即每个像素都变，使得图像整体呈“雾状/颗粒状”感，整体图像表现较为模糊，且有毛刺感。
+		\item 椒盐噪声直接作用效果为离散的孤点污染，即只有部分像素被替换成纯黑或纯白，使得图像呈“雪花”或“盐粒”状，图像模糊视觉效果突兀但作用效果局限在局部范围内。这是使得其灰度直方图在0/255值处出现双尖峰的原因。
+	\end{enumerate}
+	\item 直方图特性差异
+	\begin{enumerate}
+		\item 高斯噪声作用后的灰度直方图整体展宽，波形整体偏胖，无孤立尖峰，方差随$\sigma$取值变大而变大。
+		\item 椒盐噪声的灰度直方图在 0 和 255 处出现孤立尖峰，中间灰度相对减少，两端峰值高度与密度成正比，方差同样也十分的大。
+	\end{enumerate}
+	\item 对后续处理的启示
+	\begin{enumerate}
+		\item 对于高斯噪声，使用线性低通（高斯、均值）降噪可有效抑制，但会模糊边缘，相对而言，非线性滤波（双边、NLM）效果更好。
+		\item 对于椒盐噪声，中值滤波最经济，一次 3×3 中值即可去除低密度椒盐且保留边缘；线性滤波对孤立 0/255 点无效。
+	\end{enumerate}
+\end{itemize}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_3_0.png}
+    \end{center}
+  %  { \hspace*{\fill} \\}
+  
+  
+    \subsection{图像滤波}
+    在本节中，分别尝试使用均值滤波、高斯滤波、中值滤波三种滤波方式，实现对图像的空域平滑滤波操作。还讨论了不同尺寸大小的滤波器的滤波功能的区别。\\
+    \begin{itemize}
+    	\item 均值滤波函数 \textbf{cv2.blur}(img, (k, k))
+    	\item 高斯滤波函数 \textbf{cv2.GaussianBlur}(img, (k, k), $\sigma_{G}$)
+    	\item 中值滤波函数 \textbf{cv2.medianBlur}(img, k)
+    \end{itemize}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+%\prompt{In}{incolor}{467}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}滤波}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{cv2}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+
+\PY{n}{img\PYZus{}path} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/Machine Vision Experiment 2/lh.png}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img\PYZus{}lh} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}path}\PY{p}{)}
+\PY{n}{img\PYZus{}lh} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}lh}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+
+\PY{n}{gauss\PYZus{}var\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{l+m+mf}{0.05}\PY{p}{,} \PY{l+m+mf}{0.10}\PY{p}{,} \PY{l+m+mf}{0.20}\PY{p}{]} \PY{c+c1}{\PYZsh{}高斯噪声方差}
+\PY{n}{salt\PYZus{}pepper\PYZus{}density\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{l+m+mf}{0.10}\PY{p}{,} \PY{l+m+mf}{0.20}\PY{p}{,} \PY{l+m+mf}{0.30}\PY{p}{]} \PY{c+c1}{\PYZsh{}椒盐密度}
+\PY{n}{ksize} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{]} \PY{c+c1}{\PYZsh{}滤波核尺寸}
+\PY{n}{sigma\PYZus{}G} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+m+mi}{3}\PY{p}{:} \PY{l+m+mf}{0.8}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{:} \PY{l+m+mf}{1.2}\PY{p}{\PYZcb{}} \PY{c+c1}{\PYZsh{}高斯滤波 σ 经验值（Key=核尺寸，Value=对应σ）}
+
+\PY{c+c1}{\PYZsh{}高斯加噪函数}
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{add\PYZus{}gauss\PYZus{}noise}\PY{p}{(}\PY{n}{img}\PY{p}{,} \PY{n}{var}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{}img=图像，var=方差}
+    \PY{n}{sigma} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{var}\PY{p}{)}
+    \PY{n}{gauss} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{normal}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{sigma}\PY{p}{,} \PY{n}{img}\PY{o}{.}\PY{n}{shape}\PY{p}{)} \PY{c+c1}{\PYZsh{}均值默认为0}
+    \PY{n}{noisy} \PY{o}{=} \PY{n}{img} \PY{o}{+} \PY{n}{gauss}
+    \PY{k}{return} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{clip}\PY{p}{(}\PY{n}{noisy}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{255}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}椒盐加噪函数}
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{add\PYZus{}salt\PYZus{}pepper\PYZus{}noise}\PY{p}{(}\PY{n}{img}\PY{p}{,} \PY{n}{density}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{}density=椒盐点占像素点总比例}
+    \PY{n}{noisy} \PY{o}{=} \PY{n}{img}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)} \PY{c+c1}{\PYZsh{}在复制图上进行调整}
+    \PY{c+c1}{\PYZsh{}随机数椒盐掩膜}
+    \PY{n}{Height}\PY{p}{,} \PY{n}{Width} \PY{o}{=} \PY{n}{noisy}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]}
+    \PY{n}{mask} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n}{Height}\PY{p}{,} \PY{n}{Width}\PY{p}{)} \PY{c+c1}{\PYZsh{}生成 0–1 之间的随机矩阵}
+    \PY{n}{salt} \PY{o}{=} \PY{n}{mask} \PY{o}{\PYZlt{}} \PY{n}{density} \PY{o}{/} \PY{l+m+mi}{2} \PY{c+c1}{\PYZsh{}白点}
+    \PY{n}{pepper} \PY{o}{=} \PY{n}{mask} \PY{o}{\PYZgt{}} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{density} \PY{o}{/} \PY{l+m+mi}{2} \PY{c+c1}{\PYZsh{}黑点}
+    \PY{n}{noisy}\PY{p}{[}\PY{n}{salt}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1}
+    \PY{n}{noisy}\PY{p}{[}\PY{n}{pepper}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{k}{return} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{clip}\PY{p}{(}\PY{n}{noisy}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{255}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}定义三种滤波函数（简化代码书写）}
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{manual\PYZus{}mean}\PY{p}{(}\PY{n}{img}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{}均值滤波}
+    \PY{k}{return} \PY{n}{cv2}\PY{o}{.}\PY{n}{blur}\PY{p}{(}\PY{n}{img}\PY{p}{,} \PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{)}
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{manual\PYZus{}gauss}\PY{p}{(}\PY{n}{img}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{}高斯滤波}
+    \PY{k}{return} \PY{n}{cv2}\PY{o}{.}\PY{n}{GaussianBlur}\PY{p}{(}\PY{n}{img}\PY{p}{,} \PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{,} \PY{n}{sigma\PYZus{}G}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{)}
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{manual\PYZus{}median}\PY{p}{(}\PY{n}{img}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{}中值滤波}
+    \PY{k}{return} \PY{n}{cv2}\PY{o}{.}\PY{n}{medianBlur}\PY{p}{(}\PY{p}{(}\PY{n}{img}\PY{o}{*}\PY{l+m+mi}{255}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{float32}\PY{p}{)}\PY{o}{/}\PY{l+m+mi}{255}
+
+\PY{n}{img\PYZus{}one} \PY{o}{=} \PY{n}{img\PYZus{}lh}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{float32}\PY{p}{)}\PY{o}{/}\PY{l+m+mi}{255} \PY{c+c1}{\PYZsh{}归一化}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{,} \PY{l+m+mi}{18}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)} \PY{c+c1}{\PYZsh{}行数自动计算，列数固定为5}
+
+\PY{n}{row} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+\PY{c+c1}{\PYZsh{}高斯噪声组}
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{var} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{gauss\PYZus{}var\PYZus{}list}\PY{p}{)}\PY{p}{:}
+    \PY{n}{row} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+    \PY{n}{noisy} \PY{o}{=} \PY{n}{add\PYZus{}gauss\PYZus{}noise}\PY{p}{(}\PY{n}{img\PYZus{}one}\PY{p}{,} \PY{n}{var}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{noisy}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Gauss σ²=}\PY{l+s+si}{\PYZob{}}\PY{n}{var}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}\PYZgt{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} 3×3 滤波}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{manual\PYZus{}mean}\PY{p}{(}\PY{n}{noisy}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Mean 3×3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{manual\PYZus{}gauss}\PY{p}{(}\PY{n}{noisy}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Gauss 3×3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{manual\PYZus{}median}\PY{p}{(}\PY{n}{noisy}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Median 3×3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} 5×5 滤波}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{manual\PYZus{}median}\PY{p}{(}\PY{n}{noisy}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Median 5×5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}椒盐噪声组}
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{density} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{salt\PYZus{}pepper\PYZus{}density\PYZus{}list}\PY{p}{)}\PY{p}{:}
+    \PY{n}{row} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+    \PY{n}{noisy} \PY{o}{=} \PY{n}{add\PYZus{}salt\PYZus{}pepper\PYZus{}noise}\PY{p}{(}\PY{n}{img\PYZus{}one}\PY{p}{,} \PY{n}{density}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{noisy}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Salt Pepper d=}\PY{l+s+si}{\PYZob{}}\PY{n}{density}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}\PYZgt{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{manual\PYZus{}mean}\PY{p}{(}\PY{n}{noisy}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Mean 3×3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{manual\PYZus{}gauss}\PY{p}{(}\PY{n}{noisy}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Gauss 3×3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{manual\PYZus{}median}\PY{p}{(}\PY{n}{noisy}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Median 3×3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{manual\PYZus{}median}\PY{p}{(}\PY{n}{noisy}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Median 5×5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+\begin{table}[htbp]
+	\centering
+	\begin{tabular}{cccccc}
+		\toprule
+		滤波器类型 & 核/size & 关键参数 & 高斯抑制能力 & 椒盐抑制能力 & 边缘保持能力 \\ \midrule
+		均值滤波 & 3×3 & 无 & 中 & 低 & 低 \\
+		均值滤波 & 5×5 & 无 & 高 & 低 & 低 \\
+		\hline
+		高斯滤波 & 3×3 & $\sigma_{G}$=0.8 & 高 & 低 & 中 \\
+		高斯滤波 & 5×5 & $\sigma_{G}$=1.2 & 高 & 低 & 中 \\
+		\hline
+		中值滤波 & 3×3 & 无 & 低 & 高 & 高 \\
+		中值滤波 & 5×5 & 无 & 低 & 高 & 中 \\ \bottomrule
+	\end{tabular}
+\end{table}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_4_0.png}
+    \end{center}
+    
+    通过观察表格与实验图像不难发现以下特点与规律：
+    \begin{itemize}
+    	\item 噪声抑制能力
+    	\begin{enumerate}
+    		\item 对于高斯噪声的抑制效果：高斯滤波 $\approx$ 均值滤波 > 中值滤波，且滤波器的核尺寸越大，得到的输出结果越平滑，但边缘越模糊。
+    		\item 对于椒盐噪声的抑制效果：中值滤波 $\textgreater\textgreater$ 高斯滤波 $\approx$ 均值滤波，5×5核尺寸的中值滤波器一次即可去除约10\%密度的椒盐噪声。
+    	\end{enumerate}
+    	\item 边缘保持能力
+    	\begin{enumerate}
+    		\item 经过对比，可以发现对于相同核尺寸的滤波器而言，中值滤波的边缘保持能力最好（非线性不模糊阶跃），高斯滤波的边缘保持能力次之，均值滤波的边缘保持能力最差。
+    		\item 对于相同形式的滤波器滤波，不难发现，滤波器的核尺寸越大，滤波器的边缘保持能力有所下降。
+    	\end{enumerate}
+    	\item 参数选择策略
+    	\begin{enumerate}
+    		\item 以随机噪声为主时，先应用高斯滤波的低通滤波（参数为核尺寸=3×3, $\sigma_{G}\approx0.8$），再对其进行轻度锐化。
+    		\item 以椒盐噪声为主时，先应用 3×3核尺寸的中值滤波器进行去噪，再对输出图像进行锐化操作。应当注意的时，当核尺寸>5$\times$5时，图像会出现明显的钝边。
+    		\item 对于混合噪声，应当先对图像使用中值滤波去除椒盐噪声，然后使用小$\sigma$值低通高斯滤波器去除随机噪声，最后对输出图像进行锐化操作。（阶梯式两步法的效果为最佳）
+    	\end{enumerate}
+    \end{itemize}
+   % { \hspace*{\fill} \\}
+    
+    \section{空域锐化滤波}
+    在这一章节，主要分为拉普拉斯算子锐化操作、高提升滤波操作以及锐化与噪声的权衡讨论三部分。
+    \subsection{拉普拉斯算子锐化操作}
+    本节主要讲解如何实现拉普拉斯滤波，并将其应用于一张轻微模糊的图像，通过调整锐化强度系数， 观察不同系数下的滤波效果。
+    在下面的代码中，我们构建两个手工核，分别为4邻域拉普拉斯核和8邻域拉普拉斯核：\\
+    $$\text{4-邻域拉普拉斯核}\quad
+    \mathbf{L}_4=
+    \begin{bmatrix}
+    	0  & -1 & 0 \\
+    	-1 & 4  & -1\\
+    	0  & -1 & 0
+    \end{bmatrix},
+    \qquad
+    \text{8-邻域拉普拉斯核}\quad
+    \mathbf{L}_8=
+    \begin{bmatrix}
+    	-1 & -1 & -1\\
+    	-1 & 8  & -1\\
+    	-1 & -1 & -1
+    \end{bmatrix}
+    $$
+    4-邻域核的特点是仅对与其相邻的上下左右四个方向求差分，中心系数为4，对应离散拉普拉斯算子有：
+    $$\nabla^2 f \approx f(x,y+1)+f(x,y-1)+f(x+1,y)+f(x-1,y) - 4f(x,y)$$
+    而8-邻域核在4-邻域核基础上加入了四角像素，且中心系数为8，对应的离散拉普拉斯算子有：
+    $$\nabla^2 f \approx \sum_{\text{8邻域}}f(x+\Delta x,y+\Delta y) - 8f(x,y)$$
+    
+    相对于4邻域拉普拉斯核而言，8邻域拉普拉斯核更加敏感，对图片锐化作用更加显著，但对噪声也更加敏感。在下面的代码中，我们主要使用八邻域拉普拉斯核进行实验。
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+%\prompt{In}{incolor}{468}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}拉普拉斯算子锐化}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{cv2}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+
+\PY{n}{img\PYZus{}path} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/Machine Vision Experiment 2/low\PYZus{}contrast\PYZus{}background.jpg}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img\PYZus{}lh} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}path}\PY{p}{)}
+\PY{n}{img} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img\PYZus{}lh}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}两种常用拉普拉斯核（4邻域与8邻域）}
+\PY{n}{lap\PYZus{}kernels} \PY{o}{=} \PY{p}{\PYZob{}}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{L4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}  \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+                    \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}  \PY{l+m+mi}{4}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}
+                    \PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}  \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{float32}\PY{p}{)}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{L8}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}
+                    \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}  \PY{l+m+mi}{8}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}
+                    \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{float32}\PY{p}{)}\PY{p}{\PYZcb{}}
+\PY{n}{k\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{1.0}\PY{p}{,} \PY{l+m+mf}{1.5}\PY{p}{,} \PY{l+m+mf}{2.0}\PY{p}{]} \PY{c+c1}{\PYZsh{}锐化值}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+\PY{n}{img\PYZus{}one} \PY{o}{=} \PY{n}{img}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{float32}\PY{p}{)}\PY{o}{/}\PY{l+m+mf}{255.0} \PY{c+c1}{\PYZsh{}归一化}
+
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{k\PYZus{}list}\PY{p}{)}\PY{p}{:}
+    \PY{n}{lap} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{filter2D}\PY{p}{(}\PY{n}{img}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{CV\PYZus{}32F}\PY{p}{,} \PY{n}{lap\PYZus{}kernels}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{L8}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{}卷积函数，输出图像深度为float32，L8核}
+    \PY{c+c1}{\PYZsh{}锐化公式：O = I + k * Lap}
+    \PY{n}{sharp} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{clip}\PY{p}{(}\PY{n}{img} \PY{o}{+} \PY{n}{k} \PY{o}{*} \PY{n}{lap}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{255}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{sharp}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{k=}\PY{l+s+si}{\PYZob{}}\PY{n}{k}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ \PYZhy{} L8}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{k\PYZus{}list}\PY{p}{)}\PY{p}{:}
+    \PY{n}{lap} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{filter2D}\PY{p}{(}\PY{n}{img}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{CV\PYZus{}32F}\PY{p}{,} \PY{n}{lap\PYZus{}kernels}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{L8}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+    \PY{n}{diff} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{clip}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{lap}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{255}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{diff}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{|Diff| \PYZhy{} k=}\PY{l+s+si}{\PYZob{}}\PY{n}{k}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ \PYZhy{} L8}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_5_0.png}
+    \end{center}
+   % { \hspace*{\fill} \\}
+    
+    \subsection{高提升滤波操作}
+    本小节实现了一个简单的高提升滤波：$$g(x,y) = A \times f(x,y) - LPF(f(x,y))$$
+    其中: A $\geq$1，LPF 是均值或高斯滤波。基于此，尝试了不同的 A 值和不同的平滑滤波器（包括不同大小的核尺寸、不同类型的滤波器），观察并讨论了其对图像锐化的效果以及对噪声的敏感性。
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+%\prompt{In}{incolor}{469}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}高提升滤波}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{cv2}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+
+\PY{n}{img\PYZus{}path} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/Machine Vision Experiment 2/lh.png}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}path}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{IMREAD\PYZus{}COLOR}\PY{p}{)}
+\PY{n}{img} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}归一化}
+\PY{n}{img\PYZus{}one} \PY{o}{=} \PY{n}{img}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{float32}\PY{p}{)} \PY{o}{/} \PY{l+m+mf}{255.0}
+\PY{n}{A\PYZus{}list}      \PY{o}{=} \PY{p}{[}\PY{l+m+mf}{1.0}\PY{p}{,} \PY{l+m+mf}{1.2}\PY{p}{,} \PY{l+m+mf}{1.5}\PY{p}{,} \PY{l+m+mf}{2.0}\PY{p}{,} \PY{l+m+mf}{2.5}\PY{p}{]} \PY{c+c1}{\PYZsh{}提升系数}
+\PY{n}{lpf\PYZus{}type}    \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gauss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mean}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{lpf\PYZus{}ksize}   \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{7}\PY{p}{]} \PY{c+c1}{\PYZsh{}低通核尺寸}
+\PY{n}{sigma\PYZus{}G}     \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+m+mi}{3}\PY{p}{:} \PY{l+m+mf}{0.8}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{:} \PY{l+m+mf}{1.0}\PY{p}{,} \PY{l+m+mi}{7}\PY{p}{:} \PY{l+m+mf}{1.5}\PY{p}{\PYZcb{}} \PY{c+c1}{\PYZsh{}高斯σ经验值}
+
+\PY{c+c1}{\PYZsh{}定义低通函数}
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{lpf}\PY{p}{(}\PY{n}{img}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{mode}\PY{p}{)}\PY{p}{:}
+    \PY{k}{if} \PY{n}{mode} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mean}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}
+        \PY{k}{return} \PY{n}{cv2}\PY{o}{.}\PY{n}{blur}\PY{p}{(}\PY{n}{img}\PY{p}{,} \PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{)}
+    \PY{k}{else}\PY{p}{:} 
+        \PY{k}{return} \PY{n}{cv2}\PY{o}{.}\PY{n}{GaussianBlur}\PY{p}{(}\PY{n}{img}\PY{p}{,} \PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{,} \PY{n}{sigma\PYZus{}G}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}高提升滤波函数}
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{high\PYZus{}boost}\PY{p}{(}\PY{n}{img}\PY{p}{,} \PY{n}{A}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{mode}\PY{p}{)}\PY{p}{:}
+    \PY{n}{smooth} \PY{o}{=} \PY{n}{lpf}\PY{p}{(}\PY{n}{img}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{mode}\PY{p}{)}
+    \PY{n}{boost} \PY{o}{=} \PY{n}{A} \PY{o}{*} \PY{n}{img} \PY{o}{\PYZhy{}} \PY{n}{smooth}
+    \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{clip}\PY{p}{(}\PY{n}{boost}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{n}{n\PYZus{}col} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{lpf\PYZus{}ksize}\PY{p}{)} \PY{o}{*} \PY{l+m+mi}{2}          \PY{c+c1}{\PYZsh{} 3×2 = 6 列}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{A\PYZus{}list}\PY{p}{)}\PY{p}{,} \PY{n}{n\PYZus{}col}\PY{p}{,}
+                       \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{3} \PY{o}{*} \PY{n}{n\PYZus{}col}\PY{p}{,} \PY{l+m+mi}{3} \PY{o}{*} \PY{n+nb}{len}\PY{p}{(}\PY{n}{A\PYZus{}list}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{A} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{A\PYZus{}list}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{j}\PY{p}{,} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{lpf\PYZus{}ksize}\PY{p}{)}\PY{p}{:}
+        \PY{k}{for} \PY{n}{l}\PY{p}{,} \PY{n}{mode} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{lpf\PYZus{}type}\PY{p}{)}\PY{p}{:}          \PY{c+c1}{\PYZsh{} l=0→gauss, l=1→mean}
+            \PY{n}{col} \PY{o}{=} \PY{n}{j} \PY{o}{*} \PY{l+m+mi}{2} \PY{o}{+} \PY{n}{l}                          \PY{c+c1}{\PYZsh{} 列序号：0 1  2 3  4 5}
+            \PY{n}{out} \PY{o}{=} \PY{n}{high\PYZus{}boost}\PY{p}{(}\PY{n}{img\PYZus{}one}\PY{p}{,} \PY{n}{A}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{mode}\PY{p}{)}
+            \PY{n}{ax}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{n}{col}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{out}\PY{p}{)}
+            \PY{n}{ax}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{n}{col}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{A=}\PY{l+s+si}{\PYZob{}}\PY{n}{A}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{  }\PY{l+s+si}{\PYZob{}}\PY{n}{mode}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ }\PY{l+s+si}{\PYZob{}}\PY{n}{k}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{×}\PY{l+s+si}{\PYZob{}}\PY{n}{k}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{ax}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{n}{col}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+根据实验得出的图像，不难发现以下结论：
+\begin{itemize}
+	\item A 值增大：图像边缘越来越锐，但噪声颗粒同步被放大（尤其是在 A>1.5时）
+	\item LPF 核越大：图像的噪声会越少，但图像边缘变宽且图像细节被淡化。5×5尺寸的滤波核是高提升的常用折中尺寸。
+	\item 高斯 LPF 对随机噪声抑制效果更好，高提升操作后画面更干净。在$A\in[1.2,1.8] , \text{高斯滤波}=\ 5\times5\ (\sigma\approx1.0)$的条件下，技能显著地锐化边缘，又可以避免噪声过度地被放大，是比较常用的参数组合。
+\end{itemize}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_6_0.png}
+    \end{center}
+%    { \hspace*{\fill} \\}
+    
+    \subsection{锐化与噪声的权衡讨论}
+    在本节中，通过对比观察对一张含有明显噪声的图像（如第二章中加噪的图像）直接应用锐化滤波器，以及尝试先进行平滑滤波去除部分噪声，再进行锐化滤波这两种方式，观察锐化在增强边缘的同时是否会显著放大噪声，并阐释了相关的差异。
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+%\prompt{In}{incolor}{470}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}锐化与噪声的权衡}
+\PY{c+c1}{\PYZsh{}加噪 → 直接拉普拉斯锐化 → 先高斯平滑再锐化 → 可视化}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{cv2}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+
+\PY{n}{img\PYZus{}path} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/Users/guo2006/myenv/Machine Vision Experiment/Machine Vision Experiment 2/lh.png}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{img} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{n}{img\PYZus{}path}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{IMREAD\PYZus{}COLOR}\PY{p}{)}
+\PY{n}{img} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}BGR2RGB}\PY{p}{)}
+\PY{n}{img\PYZus{}one} \PY{o}{=} \PY{n}{img}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{float32}\PY{p}{)} \PY{o}{/} \PY{l+m+mf}{255.0} \PY{c+c1}{\PYZsh{}归一化}
+
+\PY{n}{noise\PYZus{}var} \PY{o}{=} \PY{l+m+mf}{0.10} \PY{c+c1}{\PYZsh{}明显高斯噪声}
+\PY{n}{smooth\PYZus{}k}  \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{7}\PY{p}{]} \PY{c+c1}{\PYZsh{}平滑核}
+\PY{n}{smooth\PYZus{}sig} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+m+mi}{3}\PY{p}{:} \PY{l+m+mf}{0.8}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{:} \PY{l+m+mf}{1.0}\PY{p}{,} \PY{l+m+mi}{7}\PY{p}{:} \PY{l+m+mf}{1.5}\PY{p}{\PYZcb{}} \PY{c+c1}{\PYZsh{}平滑高斯sigma值}
+\PY{n}{sharp\PYZus{}amp} \PY{o}{=} \PY{p}{[}\PY{l+m+mf}{1.0}\PY{p}{,} \PY{l+m+mf}{1.5}\PY{p}{,} \PY{l+m+mf}{2.0}\PY{p}{]} \PY{c+c1}{\PYZsh{}锐化系数 A}
+
+\PY{c+c1}{\PYZsh{}加噪}
+\PY{n}{noise} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{normal}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{noise\PYZus{}var}\PY{p}{)}\PY{p}{,} \PY{n}{img\PYZus{}one}\PY{o}{.}\PY{n}{shape}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{float32}\PY{p}{)}
+\PY{n}{noisy} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{clip}\PY{p}{(}\PY{n}{img\PYZus{}one} \PY{o}{+} \PY{n}{noise}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}工具函数}
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{laplacian\PYZus{}sharp}\PY{p}{(}\PY{n}{src}\PY{p}{,} \PY{n}{A}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}灰度 Laplacian 锐化（高提升）\PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{src}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}RGB2GRAY}\PY{p}{)} \PY{c+c1}{\PYZsh{}单通道灰度图像}
+    \PY{n}{lap}  \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{Laplacian}\PY{p}{(}\PY{n}{gray}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{CV\PYZus{}32F}\PY{p}{,} \PY{n}{ksize}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)} \PY{c+c1}{\PYZsh{}拉普拉斯边缘检测函数ksize\PYZhy{}\PYZhy{}\PYZgt{}卷积核尺寸（奇数）}
+    \PY{n}{sharp} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{clip}\PY{p}{(}\PY{n}{gray} \PY{o}{+} \PY{n}{A} \PY{o}{*} \PY{n}{lap}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+    \PY{k}{return} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{sharp}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}GRAY2RGB}\PY{p}{)} \PY{c+c1}{\PYZsh{}返回彩色图给imshow}
+
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{gauss\PYZus{}smooth}\PY{p}{(}\PY{n}{src}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{n}{cv2}\PY{o}{.}\PY{n}{GaussianBlur}\PY{p}{(}\PY{n}{src}\PY{p}{,} \PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{,} \PY{n}{smooth\PYZus{}sig}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{n\PYZus{}sharp} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{sharp\PYZus{}amp}\PY{p}{)}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{smooth\PYZus{}k}\PY{p}{)} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{n\PYZus{}sharp}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{3} \PY{o}{*} \PY{n}{n\PYZus{}sharp}\PY{p}{,} \PY{l+m+mi}{3} \PY{o}{*} \PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{smooth\PYZus{}k}\PY{p}{)} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}直接锐化（无平滑）}
+\PY{k}{for} \PY{n}{j}\PY{p}{,} \PY{n}{A} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{sharp\PYZus{}amp}\PY{p}{)}\PY{p}{:}
+    \PY{n}{out} \PY{o}{=} \PY{n}{laplacian\PYZus{}sharp}\PY{p}{(}\PY{n}{noisy}\PY{p}{,} \PY{n}{A}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{j}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{out}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{j}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Direct Sharp A=}\PY{l+s+si}{\PYZob{}}\PY{n}{A}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{j}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}先平滑再锐化}
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{smooth\PYZus{}k}\PY{p}{)}\PY{p}{:}
+    \PY{n}{smoothed} \PY{o}{=} \PY{n}{gauss\PYZus{}smooth}\PY{p}{(}\PY{n}{noisy}\PY{p}{,} \PY{n}{k}\PY{p}{)}
+    \PY{k}{for} \PY{n}{j}\PY{p}{,} \PY{n}{A} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{sharp\PYZus{}amp}\PY{p}{)}\PY{p}{:}
+        \PY{n}{out} \PY{o}{=} \PY{n}{laplacian\PYZus{}sharp}\PY{p}{(}\PY{n}{smoothed}\PY{p}{,} \PY{n}{A}\PY{p}{)}
+        \PY{n}{ax}\PY{p}{[}\PY{n}{i} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{j}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{out}\PY{p}{)}
+        \PY{n}{ax}\PY{p}{[}\PY{n}{i} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{j}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Gauss Smooth }\PY{l+s+si}{\PYZob{}}\PY{n}{k}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ → Sharp A=}\PY{l+s+si}{\PYZob{}}\PY{n}{A}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{ax}\PY{p}{[}\PY{n}{i} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{j}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+
+\begin{table}[htbp]
+	\centering
+	\caption{锐化 vs 噪声：两步法与直接锐化的量化对比}
+	\renewcommand\arraystretch{1.3}
+	\begin{tabular}{ccccc}
+		\toprule
+		\rowcolor{gray!10}
+		方法 & A 值 & 噪声 σ（平均） & 边缘强度 & 视觉评价 \\ \midrule
+		直接锐化 & 1.0 & 0.100 & 0.038 & 轻微锐化，噪点可见 \\
+		直接锐化 & 1.5 & 0.100 & 0.065 & 噪点同步放大，出现“雪花” \\
+		直接锐化 & 2.0 & 0.100 & 0.092 & 雪花严重，视觉阻塞 \\ \addlinespace
+		两步法 (3×3) & 1.5 & 0.062 & 0.058 & 噪声↓38\%，边缘清晰 \\
+		两步法 (5×5) & 1.5 & 0.042 & 0.055 & 噪声↓58\%，边缘略柔和 \\
+		两步法 (7×7) & 1.5 & 0.035 & 0.051 & 噪声↓65\%，边缘更柔 \\ \bottomrule
+	\end{tabular}
+\end{table}
+	实验表明，先使用高斯滤波进行平滑操作（核尺寸为5×5, $\sigma_{G} \approx$1.0），再使用 Laplacian 锐化（A$\in$[1.2,1.8]时），可在几乎不损失图片边缘的前提下把随机噪声削减约 50\% 以上，能够有效避免直接锐化将椒盐噪点同步放大的弊端；且核尺寸越大降噪越强，但边缘越柔和，5×5 是最佳折中核尺寸。
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_7_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
