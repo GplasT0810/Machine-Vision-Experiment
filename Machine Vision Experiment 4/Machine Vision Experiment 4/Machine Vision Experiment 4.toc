@@ -1,0 +1,8 @@
+\contentsline {section}{\numberline {1}形态学处理}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}腐蚀运算(Erosion)}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}膨胀运算(Dilation)}{4}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}开运算(Opening)}{6}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}闭运算(Closing)}{7}{subsection.1.4}%
+\contentsline {subsection}{\numberline {1.5}骨架提取(Skeletonization)}{9}{subsection.1.5}%
+\contentsline {section}{\numberline {2}边缘检测操作}{10}{section.2}%
+\contentsline {section}{\numberline {3}图像分割}{12}{section.3}%
